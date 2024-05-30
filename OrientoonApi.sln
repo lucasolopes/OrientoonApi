@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34221.43
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrientoonApi", "OrientoonApi\OrientoonApi.csproj", "{DBE4A45D-E82A-47E5-9BBF-DD2F64DC9E9B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DBE4A45D-E82A-47E5-9BBF-DD2F64DC9E9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBE4A45D-E82A-47E5-9BBF-DD2F64DC9E9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBE4A45D-E82A-47E5-9BBF-DD2F64DC9E9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBE4A45D-E82A-47E5-9BBF-DD2F64DC9E9B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B5367903-56D5-4752-844A-DB38E5A1F05E}
+	EndGlobalSection
+EndGlobal
