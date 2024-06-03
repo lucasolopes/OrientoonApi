@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace OrientoonApi.Models
+namespace OrientoonApi.Models.Entities
 {
     [Table("Artista")]
     public class ArtistaModel
@@ -9,6 +10,8 @@ namespace OrientoonApi.Models
         [JsonIgnore]
         public int Id { get; set; }
 
+        //[JsonProperty("NomeArtista")]
+        [DataType(DataType.Text)]
         public string NomeArtista { get; set; }
 
         [JsonIgnore]

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OrientoonApi.Data;
+using OrientoonApi.Data.Contexts;
 
 #nullable disable
 
@@ -138,8 +139,9 @@ namespace OrientoonApi.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("varchar(500)");
 
-                    b.Property<DateOnly>("DataLancamento")
-                        .HasColumnType("date");
+                    b.Property<string>("DataLancamento")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Descricao")
                         .IsRequired()

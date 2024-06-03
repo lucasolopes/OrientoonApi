@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace OrientoonApi.Models
+namespace OrientoonApi.Models.Entities
 {
     [Table("GeneroOrientoon")]
     public class GeneroOrientoonModel

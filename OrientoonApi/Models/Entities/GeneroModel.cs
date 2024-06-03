@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace OrientoonApi.Models
+namespace OrientoonApi.Models.Entities
 {
     [Table("Genero")]
     public class GeneroModel

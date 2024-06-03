@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OrientoonApi.Models;
+using OrientoonApi.Models.Entities;
 using System.Reflection;
 
-namespace OrientoonApi.Data
+namespace OrientoonApi.Data.Contexts
 {
     public class OrientoonContext : DbContext
     {
