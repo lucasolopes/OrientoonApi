@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OrientoonApi.Data.Contexts;
 
@@ -10,9 +11,10 @@ using OrientoonApi.Data.Contexts;
 namespace OrientoonApi.Migrations
 {
     [DbContext(typeof(OrientoonContext))]
-    partial class OrientoonContextModelSnapshot : ModelSnapshot
+    [Migration("20240603213128_fix")]
+    partial class fix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
