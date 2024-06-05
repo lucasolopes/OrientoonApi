@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
-namespace OrientoonApi.Infrastructure.Middlewares
+namespace OrientoonApi.Infrastructure.Filters
 {
     public class JsonExceptionFilter : IExceptionFilter
     {

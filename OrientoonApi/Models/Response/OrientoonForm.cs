@@ -15,5 +15,17 @@ namespace OrientoonApi.Models.Response
         public string NomeArtista { get; set; }
         public string NomeAutor { get; set; }
         public string Status { get; set; }
+        public bool AdultContent { get; set; }
+
+        public OrientoonModel Converter() {             
+            return new OrientoonModel
+            {
+                Id = this.Id,
+                Titulo = this.Titulo,
+                Descricao = this.Descricao,
+                DataLancamento = this.DataLancamento,
+                AdultContent = this.AdultContent
+            };
+        }
     }
 }

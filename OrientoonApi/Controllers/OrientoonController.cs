@@ -7,6 +7,7 @@ using OrientoonApi.Services;
 using OrientoonApi.Services.Interfaces;
 using Microsoft.AspNetCore.Diagnostics;
 using System.Text.Json;
+using OrientoonApi.Data.Repositories.Interfaces;
 
 namespace OrientoonApi.Controllers
 {
@@ -15,10 +16,12 @@ namespace OrientoonApi.Controllers
     public class OrientoonController : ControllerBase
     {
         private readonly IOrientoonService _orientoonContext;
+        private readonly IOrientoonRepository _orientoonRepository;
 
-        public OrientoonController(IOrientoonService context)
+        public OrientoonController(IOrientoonService context, IOrientoonRepository orientoonRepository)
         {
             _orientoonContext = context;
+            _orientoonRepository = orientoonRepository;
         }
 
         [HttpPost]
@@ -47,7 +50,7 @@ namespace OrientoonApi.Controllers
                      return BadRequest(json);
                  }
             */
-            try { 
+            try {
 
                 OrientoonForm orientoonForm = await _orientoonContext.CreateAsync(orientoon);
                 return CreatedAtAction(nameof(GetOrientoon), new { id = orientoonForm.Id }, orientoonForm);
@@ -85,20 +88,20 @@ namespace OrientoonApi.Controllers
         {
             OrientoonForm orientoonForm = await _orientoonContext.GetAsync(id);
 
-            return orientoonForm == null ? NotFound() : Ok(orientoonForm);
-                
+            return Ok(orientoonForm);
+
         }
 
         //get: api/Orientoon/{batchSize}/{oageNumber}
-         [HttpGet("{batchSize}/{pageNumber}")] 
-         [ProducesResponseType(StatusCodes.Status200OK)]
-         [ProducesResponseType(StatusCodes.Status404NotFound)]
-         public async Task<ActionResult<List<OrientoonForm>>> GetOrientoon(int batchSize, int pageNumber)
-         {
-             List<OrientoonForm> orientoonForm = await _orientoonContext.GetListAsync( batchSize,  pageNumber);
+        [HttpGet("{batchSize}/{pageNumber}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<List<OrientoonForm>>> GetOrientoon(int batchSize, int pageNumber)
+        {
+            List<OrientoonForm> orientoonForm = await _orientoonContext.GetListAsync(batchSize, pageNumber);
 
-             return orientoonForm == null ? NotFound() : Ok(orientoonForm);
-         }
+            return Ok(orientoonForm);
+        }
 
         //put: api/Orientoon/{id}
         [HttpPut("{id}")]
@@ -126,13 +129,27 @@ namespace OrientoonApi.Controllers
             try
             {
                 await _orientoonContext.DeleteAsync(id);
-                
+
                 return Ok("Deletado com sucesso.");
             }
             catch (Exception ex)
             {
-                return NotFound(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
+
+
+        [HttpGet("titulo/{titulo}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult< List<OrientoonForm>>> GetOrientoonByTitulo(string titulo)
+        {
+            List<OrientoonForm> orientoonForm = await _orientoonContext.GetByTituloAsync(titulo);
+
+            return Ok(orientoonForm);
+        }
+
+
+
     }
 }

@@ -32,14 +32,6 @@ namespace OrientoonApi.Models.Entities
 
             public Double AvaliacaoCap { get; set; }
 
-            [Required]
-            [MaxLength(255)]
-            [MinLength(1)]
-            [DataType(DataType.Text)]
-            [StringLength(255)]
-            public string Titulo { get; set; }
-
-
             public string OrientoonId { get; set; }
 
             public OrientoonModel Orientoon { get; set; }

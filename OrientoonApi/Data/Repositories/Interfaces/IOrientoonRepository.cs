@@ -1,4 +1,5 @@
 ﻿using OrientoonApi.Models.Entities;
+using OrientoonApi.Models.Response;
 
 namespace OrientoonApi.Data.Repositories.Interfaces
 {
@@ -6,8 +7,12 @@ namespace OrientoonApi.Data.Repositories.Interfaces
     {
         Task AddAsync(OrientoonModel orientoon);
         Task DeleteAsync(string id);
-        Task<OrientoonModel> FindByIdAsync(string id);
-        Task<List<OrientoonModel>> GetByAmountAsync(int batchSize, int pageNumber);
-        Task UpdateAsync(OrientoonModel orientoon);
+        Task<OrientoonForm> FindByIdAsync(string id);
+        Task<List<OrientoonForm>> GetByAmountAsync(int batchSize, int pageNumber);
+        Task UpdateAsync(OrientoonModel orientoonModel);
+        Task<bool> ExistBtIdAsync(string id);
+        Task<bool> ExistByTituloAsync(string titulo);
+        Task<List<OrientoonForm>> FindByTituloAsync(string titulo);
+
     }
 }

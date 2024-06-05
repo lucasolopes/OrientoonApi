@@ -14,14 +14,14 @@ namespace OrientoonApi.Models.Entities
         {
         }
 
-        public OrientoonModel(string Titulo, string Descricao, DateTime? DataLancamento, string Status)
+        public OrientoonModel(string Titulo, string Descricao, DateTime? DataLancamento, bool AdultContent)
         {
            //convert DataLancamento to DateTime
             
             this.Titulo = Titulo;
             this.Descricao = Descricao;
             this.DataLancamento = DataLancamento;
-            this.Status = Status;
+            this.AdultContent = AdultContent;
         }
 
 
@@ -39,6 +39,15 @@ namespace OrientoonApi.Models.Entities
         [Newtonsoft.Json.JsonProperty("Titulo")]
         // [JsonProperty("titulo")]
         public string Titulo { get; set; }
+
+        //[NotMapped]
+        [JsonIgnore]
+        [Newtonsoft.Json.JsonProperty("NormalizedTitulo")]
+        [MaxLength(255)]
+        [MinLength(1)]
+        [DataType(DataType.Text)]
+        [StringLength(255)]
+        public string NormalizedTitulo { get; set; }
 
         [MaxLength(500)]
         [MinLength(1)]
@@ -78,6 +87,8 @@ namespace OrientoonApi.Models.Entities
         [JsonIgnore]
         public AutorModel Autor { get; set; }
 
+        [Newtonsoft.Json.JsonProperty("AdultContent")]
+        public bool AdultContent { get; set; }
 
         public ICollection<TipoOrientoonModel> TipoOrientoon { get; set; }
 
@@ -87,7 +98,10 @@ namespace OrientoonApi.Models.Entities
         [DataType(DataType.Text)]
         [StringLength(50)]
         //[JsonProperty("Status")]
-        public string Status { get; set; }
+        public int StatusId { get; set; }
+
+        [JsonIgnore]
+        public StatusModel Status { get; set; }
 
         public ICollection<CapituloModel> Capitulos { get; set; }
 
@@ -101,7 +115,8 @@ namespace OrientoonApi.Models.Entities
                 DataLancamento = this.DataLancamento,
                 NomeArtista = this.Artista.NomeArtista,
                 NomeAutor = this.Autor.NomeAutor,
-                Status = this.Status
+                Status = this.Status.Status,
+                AdultContent = this.AdultContent
             };
         }
 

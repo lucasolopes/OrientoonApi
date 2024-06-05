@@ -8,10 +8,11 @@ using OrientoonApi.Data.Contexts;
 using OrientoonApi.Data.Repositories;
 using OrientoonApi.Data.Repositories.Implementations;
 using OrientoonApi.Data.Repositories.Interfaces;
+using OrientoonApi.Infrastructure.Filters;
 using OrientoonApi.Infrastructure.Middlewares;
-using OrientoonApi.Services;
 using OrientoonApi.Services.Implementations;
 using OrientoonApi.Services.Interfaces;
+using OrientoonApi.Status.Implementations;
 using OrientoonApi.Utils;
 using System.ComponentModel;
 using System.Globalization;
@@ -25,6 +26,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add<JsonExceptionFilter>();
+
 }).AddNewtonsoftJson(options => { 
    
    
@@ -74,8 +76,12 @@ builder.Services.AddScoped<IContextRepository, ContextRepository>();
 builder.Services.AddScoped<IOrientoonRepository, OrientoonRepository>();
 builder.Services.AddScoped<IArtistaRepository, ArtistaRepository>();
 builder.Services.AddScoped<IAutorRepository, AutorRepository>();
+builder.Services.AddScoped<IStatusRepository, StatusRepository>();
 
 builder.Services.AddScoped<IOrientoonService ,OrientoonService>();
+builder.Services.AddScoped<IArtistaService, ArtistaService>();
+builder.Services.AddScoped<IAutorService, AutorService>();
+builder.Services.AddScoped<IStatusService, StatusService>();
 
 builder.Services.AddCors(options =>
 {
@@ -89,6 +95,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+app.UseMiddleware<NotFoundExceptionMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

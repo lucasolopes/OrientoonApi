@@ -12,5 +12,7 @@ namespace OrientoonApi.Services.Interfaces
          Task CreateListAsync(List<OrientoonDto> orientoon);
          Task<OrientoonForm> UpdateAsync(string id, OrientoonPutDto orientoon);
         Task DeleteAsync(string id);
+        Task<List<OrientoonForm>> GetByTituloAsync(string titulo);
+
     }
 }

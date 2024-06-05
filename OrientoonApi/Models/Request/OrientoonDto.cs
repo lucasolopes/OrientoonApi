@@ -49,9 +49,13 @@ namespace OrientoonApi.Models.Request
         [DataType(DataType.Text, ErrorMessage = "O campo {0} Esta com o formato invalido!")]
         public string Status { get; set; }
 
+        [Required(ErrorMessage = "O campo {0} é obrigatorio!")]
+        public bool AdultContent { get; set; } 
+
+
         public OrientoonModel Converter()
         {
-            return new OrientoonModel(Titulo, Descricao, DataLancamento, Status);
+            return new OrientoonModel(Titulo, Descricao, DataLancamento, AdultContent);
         }
 
     }

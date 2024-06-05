@@ -18,6 +18,8 @@ namespace OrientoonApi.Data.Contexts
         public DbSet<CapituloModel> Capitulo { get; set; }
         public DbSet<GeneroModel> Genero { get; set; }
         public DbSet<TipoModel> Tipo { get; set; }
+        public DbSet<StatusModel> Status { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

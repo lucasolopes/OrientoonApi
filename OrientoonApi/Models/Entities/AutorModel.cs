@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using OrientoonApi.Models.Response;
 
 namespace OrientoonApi.Models.Entities
 {
@@ -17,5 +18,15 @@ namespace OrientoonApi.Models.Entities
 
             [JsonIgnore]
             public ICollection<OrientoonModel> Orientoons { get; set; }
+
+            public AutorForm Converter()
+        {
+                return new AutorForm
+                {
+                    Id = Id,
+                    Nome = NomeAutor
+                };
+            }
+
         }
 }
