@@ -14,6 +14,7 @@ namespace OrientoonApi.Data.Repositories.Interfaces
         Task<bool> ExistBtIdAsync(string id);
         Task<bool> ExistByTituloAsync(string titulo);
         Task<List<OrientoonForm>> SearchAsync( int batchSize, int pageNumber,SearchDto? searchDto);
+        Task<string> GetPathBannerById(string id);
 
     }
 }

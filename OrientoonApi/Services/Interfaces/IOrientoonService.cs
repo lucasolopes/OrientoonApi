@@ -5,7 +5,7 @@ namespace OrientoonApi.Services.Interfaces
 {
     public interface IOrientoonService
     {
-         Task<OrientoonForm> CreateAsync(OrientoonDto orientoonDto);
+         Task<OrientoonForm> CreateAsync(OrientoonDto orientoonDto,IFormFile banner);
          
          Task<OrientoonForm> GetAsync(string id);
         // Task<List<OrientoonForm>> GetListAsync(int batchSize, int pageNumber);

@@ -25,9 +25,10 @@ namespace OrientoonApi.Controllers
         }
 
         [HttpPost]
+        [Consumes("multipart/form-data")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<OrientoonForm>> PostOrientoon(OrientoonDto orientoon)
+        public async Task<ActionResult<OrientoonForm>> PostOrientoon([FromForm] OrientoonDto orientoon,IFormFile banner)
         {
             /* try
              {
@@ -51,12 +52,14 @@ namespace OrientoonApi.Controllers
                  }
             */
             try {
+                if(banner == null || banner.Length == 0)
+                    return BadRequest("Banner não informado.");
 
-                OrientoonForm orientoonForm = await _orientoonContext.CreateAsync(orientoon);
+                OrientoonForm orientoonForm = await _orientoonContext.CreateAsync(orientoon,banner);
                 return CreatedAtAction(nameof(GetOrientoon), new { id = orientoonForm.Id }, orientoonForm);
             } catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(ex);
             }
 
         }
@@ -82,6 +85,7 @@ namespace OrientoonApi.Controllers
 
         //get: api/Orientoon/{id}
         [HttpGet("{id}")]
+
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<OrientoonForm>> GetOrientoon(string id)

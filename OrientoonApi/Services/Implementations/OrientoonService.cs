@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using OrientoonApi.Data.Repositories;
 using OrientoonApi.Data.Repositories.Interfaces;
 using OrientoonApi.Infrastructure.Exceptions;
@@ -21,8 +22,9 @@ namespace OrientoonApi.Services.Implementations
 		private readonly IGeneroOrientoonRepository _generoOrientoonRepository;
 		private readonly ITipoRepository _tipoRepository;
 		private readonly ITipoOrientoonRepository _tipoOrientoonRepository;
+        private readonly IWebHostEnvironment _env;
 
-		public OrientoonService(IOrientoonRepository orientoonRepository, IArtistaRepository artistaRepository, IAutorRepository autorRepository, IContextRepository contextRepository, IStatusRepository statusRepository, IGeneroRepository generoRepository, IGeneroOrientoonRepository generoOrientoonRepository,ITipoRepository tipoRepository, ITipoOrientoonRepository tipoOrientoonRepository)
+        public OrientoonService(IOrientoonRepository orientoonRepository, IArtistaRepository artistaRepository, IAutorRepository autorRepository, IContextRepository contextRepository, IStatusRepository statusRepository, IGeneroRepository generoRepository, IGeneroOrientoonRepository generoOrientoonRepository,ITipoRepository tipoRepository, ITipoOrientoonRepository tipoOrientoonRepository, IWebHostEnvironment env)
 		{
 			_orientoonRepository = orientoonRepository;
 			_artistaRepository = artistaRepository;
@@ -33,17 +35,29 @@ namespace OrientoonApi.Services.Implementations
 			_generoOrientoonRepository = generoOrientoonRepository;
 			_tipoRepository = tipoRepository;
 			_tipoOrientoonRepository = tipoOrientoonRepository;
+            _env = env;
 		}
 
-		public async Task<OrientoonForm> CreateAsync(OrientoonDto orientoonDto)
+		public async Task<OrientoonForm> CreateAsync(OrientoonDto orientoonDto, IFormFile banner)
 		{
 			OrientoonModel orientoonModel = orientoonDto.Converter();
-
 				//orientoonModel id randon text somente letras e numeros
 			orientoonModel.Id = Guid.NewGuid().ToString("N");
 
-				//implmentar na propria controller depois
-			orientoonModel.CBanner = "implementar depois a funcao";
+			//implmentar na propria controller depois
+
+			var bannerDirectory = Path.Combine(_env.ContentRootPath+"Arquivos//Projetos", "Orientoons", orientoonModel.Id);
+			if(!Directory.Exists(bannerDirectory))
+                Directory.CreateDirectory(bannerDirectory);
+
+			var fileName = Path.GetFileName(banner.FileName);
+			var filePath = Path.Combine(bannerDirectory, fileName);
+			using (var stream = new FileStream(filePath, FileMode.Create))
+			{
+                await banner.CopyToAsync(stream);
+            }
+
+			orientoonModel.CBanner = filePath;
 				
 			if(!(await _artistaRepository.ExistByNomeAsync(orientoonDto.NomeArtista)))
 				throw new NotFoundException($"Artista: {orientoonDto.NomeArtista} não encontrado");
@@ -80,9 +94,21 @@ namespace OrientoonApi.Services.Implementations
 		{
 			if(!(await _orientoonRepository.ExistBtIdAsync(id)))
 				throw new NotFoundException($"Orientoon Id: {id} não encontrado");
+            
+			OrientoonForm orientoonForm = await _orientoonRepository.FindByIdAsync(id);
+			string path = await _orientoonRepository.GetPathBannerById(id);
 
-			return await _orientoonRepository.FindByIdAsync(id);
-		}
+
+            using (var stream = new FileStream(path, FileMode.Open))
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await stream.CopyToAsync(memoryStream);
+                    orientoonForm.Banner = memoryStream.ToArray();
+                }
+            }
+            return orientoonForm;
+        }
 
 		/*public async Task<List<OrientoonForm>> GetListAsync(int batchSize, int pageNumber)
 		{
@@ -91,10 +117,10 @@ namespace OrientoonApi.Services.Implementations
 
 		public async Task CreateListAsync(List<OrientoonDto> orientoon)
 		{
-			foreach (var orientoonDto in orientoon)
+			/*foreach (var orientoonDto in orientoon)
 			{
 				 await CreateAsync(orientoonDto);
-			} 
+			} */
 		}
 
 		public async Task<OrientoonForm> UpdateAsync(string id, OrientoonPutDto orientoon)

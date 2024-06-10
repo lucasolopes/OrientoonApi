@@ -97,7 +97,6 @@ builder.Services.AddScoped<ITipoService, TipoService>();
 builder.Services.AddScoped<ICapituloService, CapituloService>();
 
 
-
 var app = builder.Build();
 
 app.UseCors("AllowOrigin");

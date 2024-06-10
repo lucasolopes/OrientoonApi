@@ -5,6 +5,8 @@ using OrientoonApi.Data.Repositories.Interfaces;
 using OrientoonApi.Models.Entities;
 using OrientoonApi.Models.Request;
 using OrientoonApi.Models.Response;
+using System.IO;
+using System.Linq;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace OrientoonApi.Data.Repositories.Implementations
@@ -33,6 +35,7 @@ namespace OrientoonApi.Data.Repositories.Implementations
                 Titulo = o.Titulo,
                 Descricao = o.Descricao,
                 DataLancamento = o.DataLancamento,
+                Avaliacao = o.Avaliacao,
                 NomeArtista = o.Artista.NomeArtista,
                 NomeAutor = o.Autor.NomeAutor,
                 Status = o.Status.Status,
@@ -52,13 +55,11 @@ namespace OrientoonApi.Data.Repositories.Implementations
             return orientoon;
         }
 
-        public async Task teste(string id)
+        public async Task<string> GetPathBannerById(string id)
         {
-            //get orientoon by id and  all generoOrientoon by orientoonId
-            OrientoonModel orientoon = await _context.Orientoons.Include(x => x.GeneroOrientoons).FirstOrDefaultAsync(x => x.Id == id);
-
-    
+            return await _context.Orientoons.Where(x => x.Id == id).Select(x => x.CBanner).FirstOrDefaultAsync();
         }
+
 
        /* public async Task<List<OrientoonForm>> GetByAmountAsync(int batchSize, int pageNumber)
         {
