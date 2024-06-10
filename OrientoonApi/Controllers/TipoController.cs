@@ -1,44 +1,45 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OrientoonApi.Models.Request;
 using OrientoonApi.Models.Response;
+using OrientoonApi.Services.Implementations;
 using OrientoonApi.Services.Interfaces;
 
 namespace OrientoonApi.Controllers
 {
     [Route("api/[controller]")]
-    public class StatusController : ControllerBase
+    public class TipoController : ControllerBase
     {
-        private readonly IStatusService _statusService;
-        public StatusController(IStatusService statusService)
+        private readonly ITipoService _tipoService;
+        public TipoController(ITipoService tipoService)
         {
-            _statusService = statusService;
+            _tipoService = tipoService;
         }
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<StatusForm>> Post([FromBody] StatusDto statusDto)
+        public async Task<ActionResult<TipoForm>> Post([FromBody] TipoDto tipoDto)
         {
             try
             {
-                StatusForm status = await _statusService.CreateAsync(statusDto);
-                return CreatedAtAction(nameof(Get), new { id = status.Id }, status);
+                TipoForm tipo = await _tipoService.CreateAsync(tipoDto);
+                return CreatedAtAction(nameof(Get), new { id = tipo.Id }, tipo);
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                return BadRequest(e.Message);
             }
         }
 
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<StatusForm>> Get(int id)
+        public async Task<ActionResult<TipoForm>> Get(int id)
         {
             try
             {
-                StatusForm statuss = await _statusService.GetAsync(id);
-                return Ok(statuss);
+                TipoForm tipos = await _tipoService.GetAsync(id);
+                return Ok(tipos);
             }
             catch (Exception e)
             {
@@ -48,12 +49,12 @@ namespace OrientoonApi.Controllers
 
         [HttpGet("list")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<List<StatusForm>>> GetList([FromQuery] int batchSize, [FromQuery] int pageNumber)
+        public async Task<ActionResult<List<TipoForm>>> GetList([FromQuery] int batchSize, [FromQuery] int pageNumber)
         {
             try
             {
-                List<StatusForm> statuss = await _statusService.GetListAsync(batchSize, pageNumber);
-                return Ok(statuss);
+                List<TipoForm> tipos = await _tipoService.GetListAsync(batchSize, pageNumber);
+                return Ok(tipos);
             }
             catch (Exception e)
             {
@@ -62,14 +63,14 @@ namespace OrientoonApi.Controllers
         }
 
         [HttpPut("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<StatusForm>> Put(int id, [FromBody] StatusDto statusDto)
+        public async Task<ActionResult<TipoForm>> Put(int id, [FromBody] TipoDto tipoDto)
         {
             try
             {
-                StatusForm status = await _statusService.UpdateAsync(id, statusDto);
-                return Ok(status);
+                TipoForm tipo = await _tipoService.UpdateAsync(id, tipoDto);
+                return AcceptedAtAction(nameof(Get), new { id = tipo.Id }, tipo);
             }
             catch (Exception e)
             {
@@ -84,7 +85,7 @@ namespace OrientoonApi.Controllers
         {
             try
             {
-                await _statusService.DeleteAsync(id);
+                await _tipoService.DeleteAsync(id);
                 return Ok();
             }
             catch (Exception e)
@@ -96,12 +97,12 @@ namespace OrientoonApi.Controllers
         [HttpGet("nome/{nome}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<StatusForm>> GetByNome(string nome)
+        public async Task<ActionResult<TipoForm>> GetByNome(string nome)
         {
             try
             {
-                StatusForm status = await _statusService.GetByNomeAsync(nome);
-                return Ok(status);
+                TipoForm tipo = await _tipoService.GetByNomeAsync(nome);
+                return Ok(tipo);
             }
             catch (Exception e)
             {

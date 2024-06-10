@@ -57,6 +57,11 @@ builder.Services.AddControllers(options =>
    // options.SuppressModelStateInvalidFilter = true; 
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowOrigin", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+}); 
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -77,23 +82,25 @@ builder.Services.AddScoped<IOrientoonRepository, OrientoonRepository>();
 builder.Services.AddScoped<IArtistaRepository, ArtistaRepository>();
 builder.Services.AddScoped<IAutorRepository, AutorRepository>();
 builder.Services.AddScoped<IStatusRepository, StatusRepository>();
+builder.Services.AddScoped<IGeneroRepository, GeneroRepository>();
+builder.Services.AddScoped<ITipoRepository, TipoRepository>();
+builder.Services.AddScoped<IGeneroOrientoonRepository, GeneroOrientoonRepository>();
+builder.Services.AddScoped<ITipoOrientoonRepository, TipoOrientoonRepository>();
+
 
 builder.Services.AddScoped<IOrientoonService ,OrientoonService>();
 builder.Services.AddScoped<IArtistaService, ArtistaService>();
 builder.Services.AddScoped<IAutorService, AutorService>();
 builder.Services.AddScoped<IStatusService, StatusService>();
+builder.Services.AddScoped<IGeneroService, GeneroService>();
+builder.Services.AddScoped<ITipoService, TipoService>();
+builder.Services.AddScoped<ICapituloService, CapituloService>();
 
-builder.Services.AddCors(options =>
-{
-    options.AddDefaultPolicy(policy => policy
-    .AllowAnyOrigin()
-    .AllowAnyHeader()
-    .AllowAnyMethod()
-       );
-});
 
 
 var app = builder.Build();
+
+app.UseCors("AllowOrigin");
 
 app.UseMiddleware<NotFoundExceptionMiddleware>();
 

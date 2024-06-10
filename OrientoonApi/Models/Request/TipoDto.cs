@@ -3,17 +3,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace OrientoonApi.Models.Request
 {
-    public class ArtistaDto
+    public class TipoDto
     {
-        [Required(ErrorMessage = "O campo {0} é obrigatório.")]
-
+        [Required (ErrorMessage = "O campo {0} é obrigatório.")]
         public string Nome { get; set; }
 
-        public ArtistaModel Converter()
+        public TipoModel Converter()
         {
-            return new ArtistaModel
+            return new TipoModel
             {
-                NomeArtista = this.Nome
+                NomeTipo = Nome
             };
         }
     }

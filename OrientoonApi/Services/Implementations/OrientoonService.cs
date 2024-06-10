@@ -17,14 +17,22 @@ namespace OrientoonApi.Services.Implementations
 		private readonly IAutorRepository _autorRepository;
 		private readonly IContextRepository _contextRepository;
 		private readonly IStatusRepository _statusRepository;
+		private readonly IGeneroRepository _generoRepository;
+		private readonly IGeneroOrientoonRepository _generoOrientoonRepository;
+		private readonly ITipoRepository _tipoRepository;
+		private readonly ITipoOrientoonRepository _tipoOrientoonRepository;
 
-		public OrientoonService(IOrientoonRepository orientoonRepository, IArtistaRepository artistaRepository, IAutorRepository autorRepository, IContextRepository contextRepository, IStatusRepository statusRepository)
+		public OrientoonService(IOrientoonRepository orientoonRepository, IArtistaRepository artistaRepository, IAutorRepository autorRepository, IContextRepository contextRepository, IStatusRepository statusRepository, IGeneroRepository generoRepository, IGeneroOrientoonRepository generoOrientoonRepository,ITipoRepository tipoRepository, ITipoOrientoonRepository tipoOrientoonRepository)
 		{
 			_orientoonRepository = orientoonRepository;
 			_artistaRepository = artistaRepository;
 			_autorRepository = autorRepository;
 			_contextRepository = contextRepository;
 			_statusRepository = statusRepository;
+			_generoRepository = generoRepository;
+			_generoOrientoonRepository = generoOrientoonRepository;
+			_tipoRepository = tipoRepository;
+			_tipoOrientoonRepository = tipoOrientoonRepository;
 		}
 
 		public async Task<OrientoonForm> CreateAsync(OrientoonDto orientoonDto)
@@ -44,13 +52,13 @@ namespace OrientoonApi.Services.Implementations
 			ArtistaModel artista = await _artistaRepository.FindByNomeAsync(orientoonDto.NomeArtista);
 
 			if(!(await _autorRepository.ExistByNomeAsync(orientoonDto.NomeAutor)))
-                throw new NotFoundException($"Autor: {orientoonDto.NomeAutor} não encontrado");
-            
+				throw new NotFoundException($"Autor: {orientoonDto.NomeAutor} não encontrado");
+			
 			AutorModel autor = await _autorRepository.FindByNomeAsync(orientoonDto.NomeAutor);
 
 			if(!(await _statusRepository.ExistByStatusAsync(orientoonDto.Status)))
-                throw new NotFoundException($"Status: {orientoonDto.Status} não encontrado");
-            
+				throw new NotFoundException($"Status: {orientoonDto.Status} não encontrado");
+			
 
 			StatusModel status = await _statusRepository.FindByStatusAsync(orientoonDto.Status);
 
@@ -71,15 +79,15 @@ namespace OrientoonApi.Services.Implementations
 		public async Task<OrientoonForm> GetAsync(string id)
 		{
 			if(!(await _orientoonRepository.ExistBtIdAsync(id)))
-                throw new NotFoundException($"Orientoon Id: {id} não encontrado");
+				throw new NotFoundException($"Orientoon Id: {id} não encontrado");
 
 			return await _orientoonRepository.FindByIdAsync(id);
-        }
+		}
 
-		public async Task<List<OrientoonForm>> GetListAsync(int batchSize, int pageNumber)
+		/*public async Task<List<OrientoonForm>> GetListAsync(int batchSize, int pageNumber)
 		{
-            return await _orientoonRepository.GetByAmountAsync(batchSize, pageNumber);
-        }
+			return await _orientoonRepository.GetByAmountAsync(batchSize, pageNumber);
+		}*/
 
 		public async Task CreateListAsync(List<OrientoonDto> orientoon)
 		{
@@ -93,13 +101,13 @@ namespace OrientoonApi.Services.Implementations
 		{
 
 			if(!(await _orientoonRepository.ExistBtIdAsync(id)))
-                throw new NotFoundException($"Orientoon Id: {id} não encontrado");
+				throw new NotFoundException($"Orientoon Id: {id} não encontrado");
 
 			//OrientoonForm oldOrientoon = await _orientoonRepository.FindByIdAsync(id);
 
 			OrientoonModel oldOrientoon = (await _orientoonRepository.FindByIdAsync(id)).Converter();
 
-            OrientoonModel newOrientoon = orientoon.Converter();
+			OrientoonModel newOrientoon = orientoon.Converter();
 
 			if (orientoon.NomeAutor != ""  )
 				if (!(await _autorRepository.ExistByNomeAsync(orientoon.NomeAutor)))
@@ -108,12 +116,12 @@ namespace OrientoonApi.Services.Implementations
 			
 			if(orientoon.NomeArtista != "")
 				if(!(await _artistaRepository.ExistByNomeAsync(orientoon.NomeArtista)))
-                    throw new NotFoundException($"Artista: {orientoon.NomeArtista} não encontrado");
+					throw new NotFoundException($"Artista: {orientoon.NomeArtista} não encontrado");
 
 
 			if (orientoon.Status != "")
 				if(!(await _statusRepository.ExistByStatusAsync(orientoon.Status)))
-                    throw new NotFoundException($"Status: {orientoon.Status} não encontrado");
+					throw new NotFoundException($"Status: {orientoon.Status} não encontrado");
 
 
 			string newNomeAutor = orientoon.NomeAutor;
@@ -138,13 +146,13 @@ namespace OrientoonApi.Services.Implementations
 				oldOrientoon.DataLancamento = newOrientoon.DataLancamento;
 			
 			if (newNomeArtista != "" && newNomeArtista != oldArtista.NomeArtista)
-                oldArtista.NomeArtista = newNomeArtista;
+				oldArtista.NomeArtista = newNomeArtista;
 			
 			if (newNomeAutor != "" && newNomeAutor != oldAutor.NomeAutor)
-                oldAutor.NomeAutor = newNomeAutor;
+				oldAutor.NomeAutor = newNomeAutor;
 			
 			if(newNomeStatus != "" && newNomeStatus != oldStatus.Status)
-                oldStatus.Status = newNomeStatus;
+				oldStatus.Status = newNomeStatus;
 			
 			oldOrientoon.Autor = oldAutor;
 			oldOrientoon.Artista = oldArtista;
@@ -158,21 +166,78 @@ namespace OrientoonApi.Services.Implementations
 		public async Task DeleteAsync(string id)
 		{
 			if(!(await _orientoonRepository.ExistBtIdAsync(id)))
-                throw new NotFoundException($"Orientoon Id: {id} não encontrado");
+				throw new NotFoundException($"Orientoon Id: {id} não encontrado");
 
 			await _orientoonRepository.DeleteAsync(id);
 			await _contextRepository.SaveChangesAsync();
 		}
 
-        public async Task<List<OrientoonForm>> GetByTituloAsync(string titulo)
-        {
-            if(!(await _orientoonRepository.ExistByTituloAsync(titulo)))
-                throw new NotFoundException($"Orientoon Titulo: {titulo} não encontrado");
+		public async Task<IEnumerable<OrientoonForm>> SearchAsync( int batchSize, int pageNumber, SearchDto? searchDto)
+		{
 
-			return await _orientoonRepository.FindByTituloAsync(titulo);
+
+			return await _orientoonRepository.SearchAsync(batchSize, pageNumber,searchDto);
+		}
+
+		public async Task AddGeneroAsync(string id, GeneroDto generoDto)
+		{
+			if(!(await _orientoonRepository.ExistBtIdAsync(id)))
+				throw new NotFoundException($"Orientoon Id: {id} não encontrado");
+
+			if(!(await _generoRepository.ExistByNomeAsync(generoDto.Nome)))
+				throw new NotFoundException($"Genero: {generoDto.Nome} não encontrado");
+
+			if (await _generoOrientoonRepository.ExistByGeneroIdAsync(id, generoDto.Nome))
+				throw new ConflictException($"Genero: {generoDto.Nome} já existe no Orientoon");
+
+			GeneroModel genero = await _generoRepository.FindByNomeAsync(generoDto.Nome);
+			await _generoOrientoonRepository.AddAsync(id, genero.Id);
+			await _contextRepository.SaveChangesAsync();
+			
+		}
+
+		public async Task DeleteGeneroAsync(string id, GeneroDto generoDto)
+		{
+		    if(!(await _orientoonRepository.ExistBtIdAsync(id)))
+				throw new NotFoundException($"Orientoon Id: {id} não encontrado");
+
+		    if(!(await _generoRepository.ExistByNomeAsync(generoDto.Nome)))
+				throw new NotFoundException($"Genero: {generoDto.Nome} não encontrado");
+
+			GeneroModel genero = await _generoRepository.FindByNomeAsync(generoDto.Nome);
+			await _generoOrientoonRepository.DeleteAsync(id, genero.Id);
+			await _contextRepository.SaveChangesAsync();
+
+		}
+
+
+
+        public async Task AddTipoAsync(string id, TipoDto tipoDto)
+        {
+            if(!(await _orientoonRepository.ExistBtIdAsync(id)))
+				throw new NotFoundException($"Orientoon Id: {id} não encontrado");
+
+			if(!(await _tipoRepository.ExistByNomeAsync(tipoDto.Nome)))
+				throw new NotFoundException($"Tipo: {tipoDto.Nome} não encontrado");
+
+			if (await _tipoOrientoonRepository.ExistByTipoIdAsync(id, tipoDto.Nome))
+				throw new ConflictException($"Tipo: {tipoDto.Nome} já existe no Orientoon");
+
+			TipoModel tipo = await _tipoRepository.FindByNomeAsync(tipoDto.Nome);
+			await _tipoOrientoonRepository.AddAsync(id, tipo.Id);
+			await _contextRepository.SaveChangesAsync();
         }
 
+        public async Task DeleteTipoAsync(string id, TipoDto tipoDto)
+        {
+            if(!(await _orientoonRepository.ExistBtIdAsync(id)))
+				throw new NotFoundException($"Orientoon Id: {id} não encontrado");
+			if(!(await _tipoRepository.ExistByNomeAsync(tipoDto.Nome)))
+				throw new NotFoundException($"Tipo: {tipoDto.Nome} não encontrado");
 
-
+			TipoModel tipo = await _tipoRepository.FindByNomeAsync(tipoDto.Nome);
+			await _tipoOrientoonRepository.DeleteAsync(id, tipo.Id);
+			await _contextRepository.SaveChangesAsync();
+        }
     }
 }

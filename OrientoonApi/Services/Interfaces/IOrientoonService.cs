@@ -8,11 +8,14 @@ namespace OrientoonApi.Services.Interfaces
          Task<OrientoonForm> CreateAsync(OrientoonDto orientoonDto);
          
          Task<OrientoonForm> GetAsync(string id);
-         Task<List<OrientoonForm>> GetListAsync(int batchSize, int pageNumber);
+        // Task<List<OrientoonForm>> GetListAsync(int batchSize, int pageNumber);
          Task CreateListAsync(List<OrientoonDto> orientoon);
          Task<OrientoonForm> UpdateAsync(string id, OrientoonPutDto orientoon);
         Task DeleteAsync(string id);
-        Task<List<OrientoonForm>> GetByTituloAsync(string titulo);
-
+        Task<IEnumerable<OrientoonForm>> SearchAsync(int batchSize, int pageNumber, SearchDto? searchDto);
+        Task AddGeneroAsync(string id, GeneroDto generoDtos);
+        Task DeleteGeneroAsync(string id, GeneroDto generoDtos);
+        Task AddTipoAsync(string id, TipoDto tipoDto);
+        Task DeleteTipoAsync(string id, TipoDto tipoDto);
     }
 }

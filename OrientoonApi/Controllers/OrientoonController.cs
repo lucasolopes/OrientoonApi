@@ -93,7 +93,7 @@ namespace OrientoonApi.Controllers
         }
 
         //get: api/Orientoon/{batchSize}/{oageNumber}
-        [HttpGet("{batchSize}/{pageNumber}")]
+       /* [HttpGet("{batchSize}/{pageNumber}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<List<OrientoonForm>>> GetOrientoon(int batchSize, int pageNumber)
@@ -101,7 +101,7 @@ namespace OrientoonApi.Controllers
             List<OrientoonForm> orientoonForm = await _orientoonContext.GetListAsync(batchSize, pageNumber);
 
             return Ok(orientoonForm);
-        }
+        }*/
 
         //put: api/Orientoon/{id}
         [HttpPut("{id}")]
@@ -139,14 +139,92 @@ namespace OrientoonApi.Controllers
         }
 
 
-        [HttpGet("titulo/{titulo}")]
+        [HttpGet("Search")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult< List<OrientoonForm>>> GetOrientoonByTitulo(string titulo)
+        public async Task<ActionResult<IEnumerable<OrientoonForm>>> SearchOrientoon([FromQuery] int? batchSize, [FromQuery] int? pageNumber,[FromQuery] SearchDto? searchDto)
         {
-            List<OrientoonForm> orientoonForm = await _orientoonContext.GetByTituloAsync(titulo);
+            /*
+                OrderBy Options:
+                "titulo" 
+                "dataLancamento" 
+                "Artista" 
+                "Autor"
+                "status" 
+             */
+            int batchSizeValue = batchSize ?? 10;
+            int pageNumberValue = pageNumber ?? 1;
+
+            IEnumerable<OrientoonForm> orientoonForm = await _orientoonContext.SearchAsync(batchSizeValue, pageNumberValue, searchDto);
 
             return Ok(orientoonForm);
+        }
+
+
+        [HttpPost("genero")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        public async Task<ActionResult> AddGeneroInOrientoon(string id, GeneroDto generoDto)
+        {
+            try
+            {
+                await _orientoonContext.AddGeneroAsync(id, generoDto);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("genero")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> DeleteGeneroInOrientoon(string id, GeneroDto generoDto)
+        {
+            try
+            {
+                await _orientoonContext.DeleteGeneroAsync(id, generoDto);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost("tipo")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        public async Task<ActionResult> AddTipoInOrientoon(string id, TipoDto tipoDto)
+        {
+            try
+            {
+                await _orientoonContext.AddTipoAsync(id, tipoDto);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("tipo")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> DeleteTipoInOrientoon(string id, TipoDto tipoDto)
+        {
+            try
+            {
+                await _orientoonContext.DeleteTipoAsync(id, tipoDto);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
 

@@ -16,6 +16,8 @@ namespace OrientoonApi.Models.Response
         public string NomeAutor { get; set; }
         public string Status { get; set; }
         public bool AdultContent { get; set; }
+        public List<GeneroForm> Generos { get; set; }
+        public List<TipoForm> Tipos { get; set; }
 
         public OrientoonModel Converter() {             
             return new OrientoonModel
