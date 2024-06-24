@@ -7,6 +7,7 @@ using OrientoonApi.Models.Request;
 using OrientoonApi.Models.Response;
 using System.IO;
 using System.Linq;
+using System.Threading.Channels;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace OrientoonApi.Data.Repositories.Implementations
@@ -14,10 +15,12 @@ namespace OrientoonApi.Data.Repositories.Implementations
     public class OrientoonRepository : IOrientoonRepository
     {
         private readonly OrientoonContext _context;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public OrientoonRepository(OrientoonContext context)
+        public OrientoonRepository(OrientoonContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task AddAsync(OrientoonModel orientoonModel)
@@ -29,6 +32,11 @@ namespace OrientoonApi.Data.Repositories.Implementations
 
         public async Task<OrientoonForm> FindByIdAsync(string id)
         {
+
+            var request = _httpContextAccessor.HttpContext.Request;
+
+            var host = $"{request.Scheme}://{request.Host}";
+
             OrientoonForm orientoon = await _context.Orientoons.Where(x => x.Id == id).Select(o => new OrientoonForm
             {
                 Id = o.Id,
@@ -40,6 +48,7 @@ namespace OrientoonApi.Data.Repositories.Implementations
                 NomeAutor = o.Autor.NomeAutor,
                 Status = o.Status.Status,
                 AdultContent = o.AdultContent,
+                Banner = host +"/"+ o.CBanner.Replace("\\", "/"),
                 Generos = o.GeneroOrientoons.Select(g => new GeneroForm
                 {
                     Id = g.Genero.Id,
@@ -49,7 +58,8 @@ namespace OrientoonApi.Data.Repositories.Implementations
                 {
                     Id = t.Tipo.Id,
                     Nome = t.Tipo.NomeTipo
-                }).ToList()
+                }
+                ).ToList()
             }).FirstOrDefaultAsync();
 
             return orientoon;
@@ -118,6 +128,9 @@ namespace OrientoonApi.Data.Repositories.Implementations
 
         public async Task<List<OrientoonForm>> SearchAsync( int batchSize, int pageNumber,SearchDto? searchDto)
         {
+            var request = _httpContextAccessor.HttpContext.Request;
+
+            var host = $"{request.Scheme}://{request.Host}";
 
             var query = _context.Orientoons.AsQueryable();
 
@@ -161,6 +174,8 @@ namespace OrientoonApi.Data.Repositories.Implementations
                 NomeAutor = o.Autor.NomeAutor,
                 Status = o.Status.Status,
                 AdultContent = o.AdultContent,
+                Banner = host + "/"+ o.CBanner.Replace("\\", "/"),
+                Avaliacao = o.Avaliacao,
                 Generos = o.GeneroOrientoons.Select(g => new GeneroForm
                 {
                     Id = g.Genero.Id,

@@ -9,7 +9,7 @@ namespace OrientoonApi.Models.Response
         public string Id { get; set; }
         [Newtonsoft.Json.JsonProperty("Titulo")]
         public string Titulo { get; set; }
-        public byte[] Banner { get; set; }
+        public string Banner { get; set; }
         public string Descricao { get; set; }
         [DataType(DataType.DateTime)]
         public DateTime? DataLancamento { get; set; }

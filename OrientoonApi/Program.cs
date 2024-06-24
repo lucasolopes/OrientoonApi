@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.Extensions.FileProviders;
 using OrientoonApi;
 using OrientoonApi.Data;
 using OrientoonApi.Data.Contexts;
@@ -77,6 +77,8 @@ builder.Services.AddDbContext<OrientoonContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddScoped<IContextRepository, ContextRepository>();
 builder.Services.AddScoped<IOrientoonRepository, OrientoonRepository>();
 builder.Services.AddScoped<IArtistaRepository, ArtistaRepository>();
@@ -97,6 +99,7 @@ builder.Services.AddScoped<ITipoService, TipoService>();
 builder.Services.AddScoped<ICapituloService, CapituloService>();
 
 
+
 var app = builder.Build();
 
 app.UseCors("AllowOrigin");
@@ -109,6 +112,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseStaticFiles();
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "Arquivos")),
+    RequestPath = "/Arquivos"
+});
 
 app.UseHttpsRedirection();
 

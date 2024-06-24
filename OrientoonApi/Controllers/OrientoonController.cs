@@ -22,6 +22,7 @@ namespace OrientoonApi.Controllers
         {
             _orientoonContext = context;
             _orientoonRepository = orientoonRepository;
+
         }
 
         [HttpPost]
@@ -91,7 +92,7 @@ namespace OrientoonApi.Controllers
         public async Task<ActionResult<OrientoonForm>> GetOrientoon(string id)
         {
             OrientoonForm orientoonForm = await _orientoonContext.GetAsync(id);
-
+            //return Ok(filePath);
             return Ok(orientoonForm);
 
         }
