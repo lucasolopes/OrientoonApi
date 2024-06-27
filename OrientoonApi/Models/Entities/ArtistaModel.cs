@@ -9,7 +9,7 @@ namespace OrientoonApi.Models.Entities
     public class ArtistaModel
     {
         [JsonIgnore]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         //[JsonProperty("NomeArtista")]
         [DataType(DataType.Text)]

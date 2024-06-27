@@ -37,7 +37,7 @@ namespace OrientoonApi.Services.Implementations
         }
 
 
-        public async Task<TipoForm> GetAsync(int id)
+        public async Task<TipoForm> GetAsync(string id)
         {
             if (!await _tipoRepository.ExistByIdAsync(id))
                 throw new NotFoundException($"Tipo com Id: {id} não encontrado.");
@@ -59,7 +59,7 @@ namespace OrientoonApi.Services.Implementations
 
         }
 
-        public async Task<TipoForm> UpdateAsync(int id, TipoDto tipoDto)
+        public async Task<TipoForm> UpdateAsync(string id, TipoDto tipoDto)
         {
             if (!await _tipoRepository.ExistByIdAsync(id))
                 throw new NotFoundException($"Tipo com Id: {id} não encontrado.");
@@ -74,7 +74,7 @@ namespace OrientoonApi.Services.Implementations
             return tipoModel.Converter();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(string id)
         {
             if (!await _tipoRepository.ExistByIdAsync(id))
                 throw new NotFoundException($"Tipo com Id: {id} não encontrado.");

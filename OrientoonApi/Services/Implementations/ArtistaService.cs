@@ -37,7 +37,7 @@ namespace OrientoonApi.Services.Implementations
         }
 
 
-        public async Task<ArtistaForm> GetAsync(int id)
+        public async Task<ArtistaForm> GetAsync(string id)
         {
             if(!await _artistaRepository.ExistByIdAsync(id))
                 throw new NotFoundException($"Artista com Id: {id} não encontrado.");
@@ -59,7 +59,7 @@ namespace OrientoonApi.Services.Implementations
 
         }
 
-        public async Task<ArtistaForm> UpdateAsync(int id, ArtistaDto artistaDto)
+        public async Task<ArtistaForm> UpdateAsync(string id, ArtistaDto artistaDto)
         {
             if(!await _artistaRepository.ExistByIdAsync(id))
                 throw new NotFoundException($"Artista com Id: {id} não encontrado.");
@@ -74,7 +74,7 @@ namespace OrientoonApi.Services.Implementations
             return artistaModel.Converter();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(string id)
         {
             if(!await _artistaRepository.ExistByIdAsync(id))
                 throw new NotFoundException($"Artista com Id: {id} não encontrado.");

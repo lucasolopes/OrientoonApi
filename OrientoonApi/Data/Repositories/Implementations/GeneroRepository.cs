@@ -19,7 +19,7 @@ namespace OrientoonApi.Data.Repositories.Implementations
             await _context.Genero.AddAsync(genero);
         }
 
-        public async Task<GeneroModel> FindByIdAsync(int id)
+        public async Task<GeneroModel> FindByIdAsync(string id)
         {
             return await _context.Genero.FindAsync(id);
         }
@@ -29,7 +29,7 @@ namespace OrientoonApi.Data.Repositories.Implementations
             return await _context.Genero.FirstOrDefaultAsync(x => x.NomeGenero == nome);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(string id)
         {
             _context.Genero.Remove(await FindByIdAsync(id));
         }
@@ -44,7 +44,7 @@ namespace OrientoonApi.Data.Repositories.Implementations
             return await _context.Genero.AnyAsync(x => x.NomeGenero == nome);
         }
 
-        public async Task<bool> ExistByIdAsync(int id)
+        public async Task<bool> ExistByIdAsync(string id)
         {
             return await _context.Genero.AnyAsync(x => x.Id == id);
         }

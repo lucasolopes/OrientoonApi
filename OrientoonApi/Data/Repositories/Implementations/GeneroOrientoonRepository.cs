@@ -14,7 +14,7 @@ namespace OrientoonApi.Data.Repositories.Implementations
             _context = context;
         }
 
-        public async Task AddAsync(string orientoonId, int generoId)
+        public async Task AddAsync(string orientoonId, string generoId)
         {
             await _context.GeneroOrientoons.AddAsync(new GeneroOrientoonModel
             {
@@ -23,7 +23,7 @@ namespace OrientoonApi.Data.Repositories.Implementations
             });
         }
 
-        public async Task DeleteAsync(string orientoonId, int generoId)
+        public async Task DeleteAsync(string orientoonId, string generoId)
         {
             _context.GeneroOrientoons.Remove(await _context.GeneroOrientoons.FindAsync(orientoonId, generoId));
         }

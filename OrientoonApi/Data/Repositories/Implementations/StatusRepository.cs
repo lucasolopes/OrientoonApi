@@ -14,7 +14,7 @@ namespace OrientoonApi.Data.Repositories.Implementations
             _context = context;
         }
 
-        public async Task<StatusModel> FindByIdAsync(int statusId)
+        public async Task<StatusModel> FindByIdAsync(string statusId)
         {
             return await _context.Status.FindAsync(statusId);
         }
@@ -24,7 +24,7 @@ namespace OrientoonApi.Data.Repositories.Implementations
             return await _context.Status.FirstOrDefaultAsync(s => s.Status == status);
         }
 
-        public async Task<bool> ExistByIdAsync(int statusId)
+        public async Task<bool> ExistByIdAsync(string statusId)
         {
             return await _context.Status.AnyAsync(s => s.Id == statusId);
         }
@@ -48,7 +48,7 @@ namespace OrientoonApi.Data.Repositories.Implementations
              _context.Status.Update(statusModel);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(string id)
         {
             _context.Status.Remove(await FindByIdAsync(id));
         }

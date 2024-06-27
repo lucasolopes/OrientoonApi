@@ -37,7 +37,7 @@ namespace OrientoonApi.Services.Implementations
         }
 
 
-        public async Task<AutorForm> GetAsync(int id)
+        public async Task<AutorForm> GetAsync(string id)
         {
             if (!await _autorRepository.ExistByIdAsync(id))
                 throw new NotFoundException($"Autor com Id: {id} não encontrado.");
@@ -58,7 +58,7 @@ namespace OrientoonApi.Services.Implementations
             return AutorForms;
         }
 
-        public async Task<AutorForm> UpdateAsync(int id, AutorDto AutorDto)
+        public async Task<AutorForm> UpdateAsync(string id, AutorDto AutorDto)
         {
             if (!await _autorRepository.ExistByIdAsync(id))
                 throw new NotFoundException($"Autor com Id: {id} não encontrado.");
@@ -73,7 +73,7 @@ namespace OrientoonApi.Services.Implementations
             return AutorModel.Converter();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(string id)
         {
             if (!await _autorRepository.ExistByIdAsync(id))
                 throw new NotFoundException($"Autor com Id: {id} não encontrado.");

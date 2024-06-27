@@ -13,7 +13,7 @@ namespace OrientoonApi.Data.Repositories.Implementations
         {
             _context = context;
         }
-        public async Task<AutorModel> FindByIdAsync(int id)
+        public async Task<AutorModel> FindByIdAsync(string id)
         {
             return await _context.Autor.FindAsync(id);
         }
@@ -28,7 +28,7 @@ namespace OrientoonApi.Data.Repositories.Implementations
             return await _context.Autor.AnyAsync(x => x.NomeAutor == nome);
         }
 
-        public async Task<bool> ExistByIdAsync(int id)
+        public async Task<bool> ExistByIdAsync(string id)
         {
             return await _context.Autor.AnyAsync(x => x.Id == id);
         }
@@ -40,7 +40,7 @@ namespace OrientoonApi.Data.Repositories.Implementations
         }
 
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(string id)
         {
             _context.Autor.Remove(await FindByIdAsync(id));
         }

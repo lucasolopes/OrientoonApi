@@ -6,10 +6,10 @@ namespace OrientoonApi.Services.Interfaces
     public interface IGeneroService
     {
         Task<GeneroForm> CreateAsync(GeneroDto generoDto);
-        Task DeleteAsync(int id);
-        Task<GeneroForm> GetAsync(int id);
+        Task DeleteAsync(string id);
+        Task<GeneroForm> GetAsync(string id);
         Task<GeneroForm> GetByNomeAsync(string nome);
         Task<List<GeneroForm>> GetListAsync(int batchSize, int pageNumber);
-        Task<GeneroForm> UpdateAsync(int id, GeneroDto generoDto);
+        Task<GeneroForm> UpdateAsync(string id, GeneroDto generoDto);
     }
 }

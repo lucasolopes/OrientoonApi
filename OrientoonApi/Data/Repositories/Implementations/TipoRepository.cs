@@ -19,7 +19,7 @@ namespace OrientoonApi.Data.Repositories.Implementations
             await _context.Tipo.AddAsync(tipo);
         }
 
-        public async Task<TipoModel> FindByIdAsync(int id)
+        public async Task<TipoModel> FindByIdAsync(string id)
         {
             return await _context.Tipo.FindAsync(id);
         }
@@ -29,7 +29,7 @@ namespace OrientoonApi.Data.Repositories.Implementations
             return await _context.Tipo.FirstOrDefaultAsync(x => x.NomeTipo == nome);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(string id)
         {
             _context.Tipo.Remove(await FindByIdAsync(id));
         }
@@ -44,7 +44,7 @@ namespace OrientoonApi.Data.Repositories.Implementations
             return await _context.Tipo.AnyAsync(x => x.NomeTipo == nome);
         }
 
-        public async Task<bool> ExistByIdAsync(int id)
+        public async Task<bool> ExistByIdAsync(string id)
         {
             return await _context.Tipo.AnyAsync(x => x.Id == id);
         }

@@ -19,7 +19,7 @@ namespace OrientoonApi.Data.Repositories.Implementations
            await _context.Artista.AddAsync(artista);
         }
 
-        public async Task<ArtistaModel> FindByIdAsync(int id)
+        public async Task<ArtistaModel> FindByIdAsync(string id)
         {
             return await _context.Artista.FindAsync(id);
         }
@@ -29,7 +29,7 @@ namespace OrientoonApi.Data.Repositories.Implementations
             return await _context.Artista.FirstOrDefaultAsync(x => x.NomeArtista == nome);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(string id)
         {
             _context.Artista.Remove(await FindByIdAsync(id));
         }
@@ -44,7 +44,7 @@ namespace OrientoonApi.Data.Repositories.Implementations
             return await _context.Artista.AnyAsync(x => x.NomeArtista == nome);
         }
 
-        public async Task<bool> ExistByIdAsync(int id)
+        public async Task<bool> ExistByIdAsync(string id)
         {
             return await _context.Artista.AnyAsync(x => x.Id == id);
         }

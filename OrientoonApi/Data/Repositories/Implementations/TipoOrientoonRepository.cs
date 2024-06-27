@@ -14,7 +14,7 @@ namespace OrientoonApi.Data.Repositories.Implementations
             _context = context;
         }
 
-        public async Task AddAsync(string orientoonId, int tipoId)
+        public async Task AddAsync(string orientoonId, string tipoId)
         {
             await _context.TipoOrientoons.AddAsync(new TipoOrientoonModel { IdOrientoon = orientoonId, IdTipo = tipoId });
         }
@@ -24,7 +24,7 @@ namespace OrientoonApi.Data.Repositories.Implementations
             return _context.TipoOrientoons.AnyAsync(x => x.IdOrientoon == id && x.Tipo.NomeTipo == nome);
         }
 
-        public async Task DeleteAsync(string orientoonId, int tipoId)
+        public async Task DeleteAsync(string orientoonId, string tipoId)
         {
             _context.TipoOrientoons.Remove(await _context.TipoOrientoons.FindAsync(orientoonId, tipoId));
         }

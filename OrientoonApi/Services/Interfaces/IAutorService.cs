@@ -6,11 +6,11 @@ namespace OrientoonApi.Services.Interfaces
     public interface IAutorService
     {
         Task<AutorForm> CreateAsync(AutorDto autorDto);
-        Task<AutorForm> GetAsync(int id);
+        Task<AutorForm> GetAsync(string id);
         Task<List<AutorForm>> GetListAsync(int batchSize, int pageNumber);
         Task CreateListAsync(List<AutorDto> autorDto);
-        Task<AutorForm> UpdateAsync(int id, AutorDto autorDto);
-        Task DeleteAsync(int id);
+        Task<AutorForm> UpdateAsync(string id, AutorDto autorDto);
+        Task DeleteAsync(string id);
         Task<AutorForm> GetByNomeAsync(string nome);
     }
 }

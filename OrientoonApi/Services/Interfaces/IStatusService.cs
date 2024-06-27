@@ -6,10 +6,10 @@ namespace OrientoonApi.Services.Interfaces
     public interface IStatusService
     {
         Task<StatusForm> CreateAsync(StatusDto statusDto);
-        Task DeleteAsync(int id);
-        Task<StatusForm> GetAsync(int id);
+        Task DeleteAsync(string id);
+        Task<StatusForm> GetAsync(string id);
         Task<StatusForm> GetByNomeAsync(string nome);
         Task<List<StatusForm>> GetListAsync(int batchSize, int pageNumber);
-        Task<StatusForm> UpdateAsync(int id, StatusDto statusDto);
+        Task<StatusForm> UpdateAsync(string id, StatusDto statusDto);
     }
 }

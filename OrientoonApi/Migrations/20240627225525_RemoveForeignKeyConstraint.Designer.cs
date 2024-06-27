@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OrientoonApi.Data.Contexts;
 
@@ -10,9 +11,10 @@ using OrientoonApi.Data.Contexts;
 namespace OrientoonApi.Migrations
 {
     [DbContext(typeof(OrientoonContext))]
-    partial class OrientoonContextModelSnapshot : ModelSnapshot
+    [Migration("20240627225525_RemoveForeignKeyConstraint")]
+    partial class RemoveForeignKeyConstraint
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,8 +23,9 @@ namespace OrientoonApi.Migrations
 
             modelBuilder.Entity("OrientoonApi.Models.Entities.ArtistaModel", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
                     b.Property<string>("NomeArtista")
                         .IsRequired()
@@ -35,8 +38,9 @@ namespace OrientoonApi.Migrations
 
             modelBuilder.Entity("OrientoonApi.Models.Entities.AutorModel", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
                     b.Property<string>("NomeAutor")
                         .IsRequired()
@@ -84,8 +88,9 @@ namespace OrientoonApi.Migrations
 
             modelBuilder.Entity("OrientoonApi.Models.Entities.GeneroModel", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
                     b.Property<string>("NomeGenero")
                         .IsRequired()
@@ -101,8 +106,8 @@ namespace OrientoonApi.Migrations
                     b.Property<string>("IdOrientoon")
                         .HasColumnType("varchar(255)");
 
-                    b.Property<string>("IdGenero")
-                        .HasColumnType("varchar(255)");
+                    b.Property<int>("IdGenero")
+                        .HasColumnType("int");
 
                     b.HasKey("IdOrientoon", "IdGenero");
 
@@ -119,13 +124,11 @@ namespace OrientoonApi.Migrations
                     b.Property<bool>("AdultContent")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<string>("ArtistaId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
+                    b.Property<int>("ArtistaId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("AutorId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
+                    b.Property<int>("AutorId")
+                        .HasColumnType("int");
 
                     b.Property<double>("Avaliacao")
                         .HasColumnType("double");
@@ -148,10 +151,9 @@ namespace OrientoonApi.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("varchar(255)");
 
-                    b.Property<string>("StatusId")
-                        .IsRequired()
+                    b.Property<int>("StatusId")
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("int");
 
                     b.Property<string>("Titulo")
                         .IsRequired()
@@ -171,8 +173,9 @@ namespace OrientoonApi.Migrations
 
             modelBuilder.Entity("OrientoonApi.Models.Entities.StatusModel", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -186,8 +189,9 @@ namespace OrientoonApi.Migrations
 
             modelBuilder.Entity("OrientoonApi.Models.Entities.TipoModel", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
                     b.Property<string>("NomeTipo")
                         .IsRequired()
@@ -203,8 +207,8 @@ namespace OrientoonApi.Migrations
                     b.Property<string>("IdOrientoon")
                         .HasColumnType("varchar(255)");
 
-                    b.Property<string>("IdTipo")
-                        .HasColumnType("varchar(255)");
+                    b.Property<int>("IdTipo")
+                        .HasColumnType("int");
 
                     b.HasKey("IdOrientoon", "IdTipo");
 

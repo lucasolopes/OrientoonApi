@@ -37,7 +37,7 @@ namespace OrientoonApi.Status.Implementations
         }
 
 
-        public async Task<StatusForm> GetAsync(int id)
+        public async Task<StatusForm> GetAsync(string id)
         {
             if (!await _statusRepository.ExistByIdAsync(id))
                 throw new NotFoundException($"Status com Id: {id} não encontrado.");
@@ -58,7 +58,7 @@ namespace OrientoonApi.Status.Implementations
             return statusForms;
         }
 
-        public async Task<StatusForm> UpdateAsync(int id, StatusDto statusDto)
+        public async Task<StatusForm> UpdateAsync(string id, StatusDto statusDto)
         {
             if (!await _statusRepository.ExistByIdAsync(id))
                 throw new NotFoundException($"Status com Id: {id} não encontrado.");
@@ -73,7 +73,7 @@ namespace OrientoonApi.Status.Implementations
             return statusModel.Converter();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(string id)
         {
             if (!await _statusRepository.ExistByIdAsync(id))
                 throw new NotFoundException($"Status com Id: {id} não encontrado.");

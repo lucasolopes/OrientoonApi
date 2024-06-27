@@ -34,7 +34,7 @@ namespace OrientoonApi.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<ArtistaForm>> Get(int id)
+        public async Task<ActionResult<ArtistaForm>> Get(string id)
         {
             try
             {
@@ -65,7 +65,7 @@ namespace OrientoonApi.Controllers
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<ArtistaForm>> Put(int id, [FromBody] ArtistaDto artistaDto)
+        public async Task<ActionResult<ArtistaForm>> Put(string id, [FromBody] ArtistaDto artistaDto)
         {
             try
             {
@@ -81,7 +81,7 @@ namespace OrientoonApi.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> Delete(string id)
         {
             try
             {

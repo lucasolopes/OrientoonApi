@@ -2,8 +2,8 @@
 {
     public interface ITipoOrientoonRepository
     {
-        Task AddAsync(string orientoonId, int tipoId);
-        Task DeleteAsync(string orientoonId, int tipoId);
+        Task AddAsync(string orientoonId, string tipoId);
+        Task DeleteAsync(string orientoonId, string tipoId);
         Task<bool> ExistByTipoIdAsync(string id, string nome);
     }
 }

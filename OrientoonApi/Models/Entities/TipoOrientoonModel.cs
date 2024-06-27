@@ -9,7 +9,7 @@ namespace OrientoonApi.Models.Entities
         public OrientoonModel Orientoon { get; set; }
 
 
-        public int IdTipo { get; set; }
+        public string IdTipo { get; set; }
         public TipoModel Tipo { get; set; }
     }
 }

@@ -9,7 +9,7 @@ namespace OrientoonApi.Models.Entities
     public class StatusModel
     {
         [Key]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [Column(TypeName = "varchar(50)")]
         [MaxLength(50)]

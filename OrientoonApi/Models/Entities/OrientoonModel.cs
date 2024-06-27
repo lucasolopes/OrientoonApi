@@ -76,13 +76,13 @@ namespace OrientoonApi.Models.Entities
         public ICollection<GeneroOrientoonModel> GeneroOrientoons { get; set; }
 
 
-        public int ArtistaId { get; set; }
+        public string ArtistaId { get; set; }
 
         [JsonIgnore]
         public ArtistaModel Artista { get; set; }
 
 
-        public int AutorId { get; set; }
+        public string AutorId { get; set; }
 
         [JsonIgnore]
         public AutorModel Autor { get; set; }
@@ -98,7 +98,7 @@ namespace OrientoonApi.Models.Entities
         [DataType(DataType.Text)]
         [StringLength(50)]
         //[JsonProperty("Status")]
-        public int StatusId { get; set; }
+        public string StatusId { get; set; }
 
         [JsonIgnore]
         public StatusModel Status { get; set; }

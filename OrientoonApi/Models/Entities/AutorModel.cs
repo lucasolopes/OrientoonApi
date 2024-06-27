@@ -10,7 +10,7 @@ namespace OrientoonApi.Models.Entities
         public class AutorModel
         {
             [JsonIgnore]
-            public int Id { get; set; }
+            public string Id { get; set; }
 
             //  [JsonProperty("NomeAutor")]
             [DataType(DataType.Text)]
