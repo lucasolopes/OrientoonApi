@@ -15,7 +15,7 @@ namespace OrientoonApi.Models.Entities
             //  [JsonProperty("NomeAutor")]
             [DataType(DataType.Text)]
             [Column("nome")]
-            public string NomeAutor { get; set; }
+            public string nome { get; set; }
 
             [JsonIgnore]
             public ICollection<OrientoonModel> Orientoons { get; set; }
@@ -25,7 +25,7 @@ namespace OrientoonApi.Models.Entities
                 return new AutorForm
                 {
                     Id = Id,
-                    Nome = NomeAutor
+                    Nome = nome
                 };
             }
 

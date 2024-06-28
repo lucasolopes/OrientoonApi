@@ -19,7 +19,7 @@ namespace OrientoonApi.Models.Entities
         {
            //convert DataLancamento to DateTime
             
-            this.Titulo = Titulo;
+            this.nome = Titulo;
             this.Descricao = Descricao;
             this.DataLancamento = DataLancamento;
             this.AdultContent = AdultContent;
@@ -35,7 +35,7 @@ namespace OrientoonApi.Models.Entities
         [StringLength(255)]
         [DataType(DataType.Text)]
         [Column("nome")]
-        public string Titulo { get; set; }
+        public string nome { get; set; }
 
         //[NotMapped]
         [JsonIgnore]
@@ -107,12 +107,12 @@ namespace OrientoonApi.Models.Entities
             return new OrientoonForm
             {
                 Id = this.Id,
-                Titulo = this.Titulo,
+                Titulo = this.nome,
                 Descricao = this.Descricao,
                 DataLancamento = this.DataLancamento,
-                NomeArtista = this.Artista.NomeArtista,
-                NomeAutor = this.Autor.NomeAutor,
-                Status = this.Status.Status,
+                NomeArtista = this.Artista.nome,
+                NomeAutor = this.Autor.nome,
+                Status = this.Status.nome,
                 AdultContent = this.AdultContent
             };
         }

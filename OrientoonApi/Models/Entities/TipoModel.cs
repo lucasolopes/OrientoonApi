@@ -13,7 +13,7 @@ namespace OrientoonApi.Models.Entities
 
 
         [Column("nome")]
-        public string NomeTipo { get; set; }
+        public string nome { get; set; }
         public ICollection<TipoOrientoonModel> TipoOrientoon { get; set; }
 
         public TipoForm Converter()
@@ -21,7 +21,7 @@ namespace OrientoonApi.Models.Entities
             return new TipoForm
             {
                 Id = this.Id,
-                Nome = this.NomeTipo
+                Nome = this.nome
             };
         }
     }

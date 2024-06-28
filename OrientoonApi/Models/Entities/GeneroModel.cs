@@ -12,7 +12,7 @@ namespace OrientoonApi.Models.Entities
         public string Id { get; set; }
 
         [Column("nome")]
-        public string NomeGenero { get; set; }
+        public string nome { get; set; }
         public ICollection<GeneroOrientoonModel> GeneroOrientoons { get; set; }
 
         public GeneroForm Converter()
@@ -20,7 +20,7 @@ namespace OrientoonApi.Models.Entities
             return new GeneroForm
             {
                 Id = this.Id,
-                Nome = this.NomeGenero
+                Nome = this.nome
             };
         }
     }

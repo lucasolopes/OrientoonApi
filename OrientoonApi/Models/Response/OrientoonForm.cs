@@ -25,7 +25,7 @@ namespace OrientoonApi.Models.Response
             return new OrientoonModel
             {
                 Id = this.Id,
-                Titulo = this.Titulo,
+                nome = this.Titulo,
                 Descricao = this.Descricao,
                 DataLancamento = this.DataLancamento,
                 AdultContent = this.AdultContent

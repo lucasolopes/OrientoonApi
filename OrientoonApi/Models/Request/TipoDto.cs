@@ -12,7 +12,7 @@ namespace OrientoonApi.Models.Request
         {
             return new TipoModel
             {
-                NomeTipo = Nome
+                nome = Nome
             };
         }
     }

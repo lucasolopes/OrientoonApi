@@ -13,7 +13,7 @@ namespace OrientoonApi.Models.Request
         {
             return new ArtistaModel
             {
-                NomeArtista = this.Nome
+                nome = this.Nome
             };
         }
     }

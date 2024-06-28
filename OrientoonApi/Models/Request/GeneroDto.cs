@@ -13,7 +13,7 @@ namespace OrientoonApi.Models.Request
         {
             return new GeneroModel
             {
-                NomeGenero = Nome
+                nome = Nome
             };
         }
     }

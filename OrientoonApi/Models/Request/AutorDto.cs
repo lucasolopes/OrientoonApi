@@ -13,7 +13,7 @@ namespace OrientoonApi.Models.Request
         {
             return new AutorModel
             {
-                NomeAutor = this.Nome
+                nome = this.Nome
             };
         }
     }

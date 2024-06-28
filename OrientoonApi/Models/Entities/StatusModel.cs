@@ -16,7 +16,7 @@ namespace OrientoonApi.Models.Entities
         [MinLength(1)]
         [DataType(DataType.Text)]
         [StringLength(50)]
-        public string Status { get; set; }
+        public string nome { get; set; }
 
         [JsonIgnore]
         public ICollection<OrientoonModel> Orientoons { get; set; }
@@ -26,7 +26,7 @@ namespace OrientoonApi.Models.Entities
             return new StatusForm
             {
                 Id = Id,
-                Status = Status
+                Status = nome
             };
         }
     }

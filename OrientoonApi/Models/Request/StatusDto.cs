@@ -12,7 +12,7 @@ namespace OrientoonApi.Models.Request
         {
             return new StatusModel
             {
-                Status = this.Status
+                nome = this.Status
             };
         }
     }
