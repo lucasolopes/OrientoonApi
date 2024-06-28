@@ -1,4 +1,5 @@
-﻿using OrientoonApi.Models.Response;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using OrientoonApi.Models.Response;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
@@ -29,15 +30,11 @@ namespace OrientoonApi.Models.Entities
         [Required]
         public string Id { get; set; }
 
-        // [Required(ErrorMessage = "O campo {0} é obrigatorio!")]
         [MaxLength(255)]
         [MinLength(1)]
-        [Display(Name = "Titulo")]
-        //[DataType(DataType.Text)]
         [StringLength(255)]
         [DataType(DataType.Text)]
-        [Newtonsoft.Json.JsonProperty("Titulo")]
-        // [JsonProperty("titulo")]
+        [Column("nome")]
         public string Titulo { get; set; }
 
         //[NotMapped]

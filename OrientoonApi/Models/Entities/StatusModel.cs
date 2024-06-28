@@ -11,7 +11,7 @@ namespace OrientoonApi.Models.Entities
         [Key]
         public string Id { get; set; }
 
-        [Column(TypeName = "varchar(50)")]
+        [Column("nome",TypeName = "varchar(50)")]
         [MaxLength(50)]
         [MinLength(1)]
         [DataType(DataType.Text)]

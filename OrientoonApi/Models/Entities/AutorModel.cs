@@ -14,6 +14,7 @@ namespace OrientoonApi.Models.Entities
 
             //  [JsonProperty("NomeAutor")]
             [DataType(DataType.Text)]
+            [Column("nome")]
             public string NomeAutor { get; set; }
 
             [JsonIgnore]

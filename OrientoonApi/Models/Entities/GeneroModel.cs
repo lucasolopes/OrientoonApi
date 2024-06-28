@@ -11,6 +11,7 @@ namespace OrientoonApi.Models.Entities
         [Required]
         public string Id { get; set; }
 
+        [Column("nome")]
         public string NomeGenero { get; set; }
         public ICollection<GeneroOrientoonModel> GeneroOrientoons { get; set; }
 

@@ -11,6 +11,8 @@ namespace OrientoonApi.Models.Entities
         [Required]
         public string Id { get; set; }
 
+
+        [Column("nome")]
         public string NomeTipo { get; set; }
         public ICollection<TipoOrientoonModel> TipoOrientoon { get; set; }
 
