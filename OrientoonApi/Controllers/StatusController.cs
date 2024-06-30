@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OrientoonApi.Models.Entities;
 using OrientoonApi.Models.Request;
 using OrientoonApi.Models.Response;
 using OrientoonApi.Services.Interfaces;
@@ -100,8 +101,8 @@ namespace OrientoonApi.Controllers
         {
             try
             {
-                StatusForm status = await _statusService.GetByNomeAsync(nome);
-                return Ok(status);
+                StatusModel status = await _statusService.GetByNomeAsync(nome);
+                return Ok(status.Converter());
             }
             catch (Exception e)
             {

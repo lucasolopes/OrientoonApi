@@ -39,10 +39,10 @@ namespace OrientoonApi.Services.Implementations
 
         public async Task<TipoForm> GetAsync(string id)
         {
-            if (!await _tipoRepository.ExistByIdAsync(id))
+            if (!await _tipoRepository.ExistsByIdAsync(id))
                 throw new NotFoundException($"Tipo com Id: {id} não encontrado.");
 
-            TipoModel tipoModel = await _tipoRepository.FindByIdAsync(id);
+            TipoModel tipoModel = await _tipoRepository.GetByIdAsync(id);
 
             return tipoModel.Converter();
         }
@@ -61,13 +61,13 @@ namespace OrientoonApi.Services.Implementations
 
         public async Task<TipoForm> UpdateAsync(string id, TipoDto tipoDto)
         {
-            if (!await _tipoRepository.ExistByIdAsync(id))
+            if (!await _tipoRepository.ExistsByIdAsync(id))
                 throw new NotFoundException($"Tipo com Id: {id} não encontrado.");
 
-            TipoModel tipoModel = await _tipoRepository.FindByIdAsync(id);
+            TipoModel tipoModel = await _tipoRepository.GetByIdAsync(id);
 
             if (tipoDto.Nome != null)
-                tipoModel.NomeTipo = tipoDto.Nome;
+                tipoModel.nome = tipoDto.Nome;
 
             await _tipoRepository.UpdateAsync(tipoModel);
             await _contextRepository.SaveChangesAsync();
@@ -76,7 +76,7 @@ namespace OrientoonApi.Services.Implementations
 
         public async Task DeleteAsync(string id)
         {
-            if (!await _tipoRepository.ExistByIdAsync(id))
+            if (!await _tipoRepository.ExistsByIdAsync(id))
                 throw new NotFoundException($"Tipo com Id: {id} não encontrado.");
 
 
@@ -84,14 +84,17 @@ namespace OrientoonApi.Services.Implementations
             await _contextRepository.SaveChangesAsync();
         }
 
-        public async Task<TipoForm> GetByNomeAsync(string nome)
+        public async Task<bool> ExistsByNameAsync(string nome)
         {
-            if (!(await _tipoRepository.ExistByNomeAsync(nome)))
+            return await _tipoRepository.ExistsByNameAsync(nome);
+        }
+
+        public async Task<TipoModel> GetByNomeAsync(string nome)
+        {
+            if (!(await _tipoRepository.ExistsByNameAsync(nome)))
                 throw new NotFoundException($"Tipo com Nome: {nome} não encontrado.");
 
-            TipoModel tipoModel = await _tipoRepository.FindByNomeAsync(nome);
-
-            return tipoModel.Converter();
+            return await _tipoRepository.GetByNomeAsync(nome);
         }
     }
 }

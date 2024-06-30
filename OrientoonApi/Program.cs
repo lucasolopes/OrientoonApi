@@ -98,7 +98,7 @@ builder.Services.AddScoped<IGeneroService, GeneroService>();
 builder.Services.AddScoped<ITipoService, TipoService>();
 builder.Services.AddScoped<ICapituloService, CapituloService>();
 
-
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 var app = builder.Build();
 

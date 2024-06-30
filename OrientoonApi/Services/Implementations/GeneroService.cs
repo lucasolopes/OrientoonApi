@@ -39,10 +39,10 @@ namespace OrientoonApi.Services.Implementations
 
         public async Task<GeneroForm> GetAsync(string id)
         {
-            if (!await _generoRepository.ExistByIdAsync(id))
+            if (!await _generoRepository.ExistsByIdAsync(id))
                 throw new NotFoundException($"Genero com Id: {id} não encontrado.");
 
-            GeneroModel generoModel = await _generoRepository.FindByIdAsync(id);
+            GeneroModel generoModel = await _generoRepository.GetByIdAsync(id);
 
             return generoModel.Converter();
         }
@@ -60,13 +60,13 @@ namespace OrientoonApi.Services.Implementations
 
         public async Task<GeneroForm> UpdateAsync(string id, GeneroDto generoDto)
         {
-            if (!await _generoRepository.ExistByIdAsync(id))
+            if (!await _generoRepository.ExistsByIdAsync(id))
                 throw new NotFoundException($"Genero com Id: {id} não encontrado.");
 
-            GeneroModel generoModel = await _generoRepository.FindByIdAsync(id);
+            GeneroModel generoModel = await _generoRepository.GetByIdAsync(id);
 
             if (generoDto.Nome != null)
-                generoModel.NomeGenero = generoDto.Nome;
+                generoModel.nome = generoDto.Nome;
 
             await _generoRepository.UpdateAsync(generoModel);
             await _contextRepository.SaveChangesAsync();
@@ -75,7 +75,7 @@ namespace OrientoonApi.Services.Implementations
 
         public async Task DeleteAsync(string id)
         {
-            if (!await _generoRepository.ExistByIdAsync(id))
+            if (!await _generoRepository.ExistsByIdAsync(id))
                 throw new NotFoundException($"Genero com Id: {id} não encontrado.");
 
 
@@ -83,14 +83,18 @@ namespace OrientoonApi.Services.Implementations
             await _contextRepository.SaveChangesAsync();
         }
 
-        public async Task<GeneroForm> GetByNomeAsync(string nome)
+
+        public async Task<bool> ExistsByNameAsync(string nome)
         {
-            if (!(await _generoRepository.ExistByNomeAsync(nome)))
+            return await _generoRepository.ExistsByNameAsync(nome);
+        }
+
+        public async Task<GeneroModel> GetByNomeAsync(string nome)
+        {
+            if (!(await _generoRepository.ExistsByNameAsync(nome)))
                 throw new NotFoundException($"Genero com Nome: {nome} não encontrado.");
 
-            GeneroModel generoModel = await _generoRepository.FindByNomeAsync(nome);
-
-            return generoModel.Converter();
+            return await _generoRepository.GetByNomeAsync(nome);
         }
     }
 }

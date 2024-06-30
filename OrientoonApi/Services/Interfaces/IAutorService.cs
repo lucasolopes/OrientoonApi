@@ -1,4 +1,5 @@
-﻿using OrientoonApi.Models.Request;
+﻿using OrientoonApi.Models.Entities;
+using OrientoonApi.Models.Request;
 using OrientoonApi.Models.Response;
 
 namespace OrientoonApi.Services.Interfaces
@@ -11,6 +12,7 @@ namespace OrientoonApi.Services.Interfaces
         Task CreateListAsync(List<AutorDto> autorDto);
         Task<AutorForm> UpdateAsync(string id, AutorDto autorDto);
         Task DeleteAsync(string id);
-        Task<AutorForm> GetByNomeAsync(string nome);
+        Task<AutorModel> GetByNomeAsync(string nomeAutor);
+        Task<AutorModel> GetByIdAsync(string autorId);
     }
 }

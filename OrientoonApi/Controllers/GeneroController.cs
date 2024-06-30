@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OrientoonApi.Models.Entities;
 using OrientoonApi.Models.Request;
 using OrientoonApi.Models.Response;
 using OrientoonApi.Services.Implementations;
@@ -102,8 +103,8 @@ namespace OrientoonApi.Controllers
         {
             try
             {
-                GeneroForm genero = await _generoService.GetByNomeAsync(nome);
-                return Ok(genero);
+                GeneroModel genero = await _generoService.GetByNomeAsync(nome);
+                return Ok(genero.Converter());
             }
             catch (Exception e)
             {

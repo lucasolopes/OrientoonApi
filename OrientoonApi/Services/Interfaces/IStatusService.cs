@@ -1,4 +1,5 @@
-﻿using OrientoonApi.Models.Request;
+﻿using OrientoonApi.Models.Entities;
+using OrientoonApi.Models.Request;
 using OrientoonApi.Models.Response;
 
 namespace OrientoonApi.Services.Interfaces
@@ -7,8 +8,9 @@ namespace OrientoonApi.Services.Interfaces
     {
         Task<StatusForm> CreateAsync(StatusDto statusDto);
         Task DeleteAsync(string id);
+        Task<StatusModel> GetByIdAsync(string statusId);
+        Task<StatusModel> GetByNomeAsync(string status);
         Task<StatusForm> GetAsync(string id);
-        Task<StatusForm> GetByNomeAsync(string nome);
         Task<List<StatusForm>> GetListAsync(int batchSize, int pageNumber);
         Task<StatusForm> UpdateAsync(string id, StatusDto statusDto);
     }

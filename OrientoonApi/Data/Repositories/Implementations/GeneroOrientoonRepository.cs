@@ -5,13 +5,10 @@ using OrientoonApi.Models.Entities;
 
 namespace OrientoonApi.Data.Repositories.Implementations
 {
-    public class GeneroOrientoonRepository : IGeneroOrientoonRepository
+    public class GeneroOrientoonRepository : GenericRepository<GeneroOrientoonModel>, IGeneroOrientoonRepository
     {
-        private readonly OrientoonContext _context;
-
-        public GeneroOrientoonRepository(OrientoonContext context)
+        public GeneroOrientoonRepository(OrientoonContext context) : base(context)
         {
-            _context = context;
         }
 
         public async Task AddAsync(string orientoonId, string generoId)
@@ -30,7 +27,7 @@ namespace OrientoonApi.Data.Repositories.Implementations
 
         public Task<bool> ExistByGeneroIdAsync(string id, string nome)
         {
-            return _context.GeneroOrientoons.AnyAsync(x => x.IdOrientoon == id && x.Genero.NomeGenero == nome);
+            return _context.GeneroOrientoons.AnyAsync(x => x.IdOrientoon == id && x.Genero.nome == nome);
         }
     }
 }

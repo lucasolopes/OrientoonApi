@@ -1,16 +1,9 @@
-﻿using OrientoonApi.Models.Entities;
+﻿using OrientoonApi.Data.Repositories.Implementations;
+using OrientoonApi.Models.Entities;
 
 namespace OrientoonApi.Data.Repositories.Interfaces
 {
-    public interface ITipoRepository
+    public interface ITipoRepository : IGenericRepository<TipoModel>
     {
-        Task AddAsync(TipoModel tipoModel);
-        Task DeleteAsync(string id);
-        Task<bool> ExistByIdAsync(string id);
-        Task<bool> ExistByNomeAsync(string nome);
-        Task<TipoModel> FindByIdAsync(string id);
-        Task<TipoModel> FindByNomeAsync(string nome);
-        Task<List<TipoModel>> GetByAmountAsync(int batchSize, int pageNumber);
-        Task UpdateAsync(TipoModel tipoModel);
     }
 }

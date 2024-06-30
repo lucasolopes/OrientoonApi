@@ -12,25 +12,17 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace OrientoonApi.Data.Repositories.Implementations
 {
-    public class OrientoonRepository : IOrientoonRepository
+    public class OrientoonRepository : GenericRepository<OrientoonModel>, IOrientoonRepository 
     {
-        private readonly OrientoonContext _context;
+
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public OrientoonRepository(OrientoonContext context, IHttpContextAccessor httpContextAccessor)
-        {
-            _context = context;
+        public OrientoonRepository(OrientoonContext context, IHttpContextAccessor httpContextAccessor) : base(context) {
+
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task AddAsync(OrientoonModel orientoonModel)
-        {
-            await _context.Orientoons.AddAsync(orientoonModel);
-        }
-
-
-
-        public async Task<OrientoonForm> FindByIdAsync(string id)
+        public async Task<OrientoonForm> GetByIdAsync(string id)
         {
 
             var request = _httpContextAccessor.HttpContext.Request;
@@ -40,24 +32,24 @@ namespace OrientoonApi.Data.Repositories.Implementations
             OrientoonForm orientoon = await _context.Orientoons.Where(x => x.Id == id).Select(o => new OrientoonForm
             {
                 Id = o.Id,
-                Titulo = o.Titulo,
+                Titulo = o.nome,
                 Descricao = o.Descricao,
                 DataLancamento = o.DataLancamento,
                 Avaliacao = o.Avaliacao,
-                NomeArtista = o.Artista.NomeArtista,
-                NomeAutor = o.Autor.NomeAutor,
-                Status = o.Status.Status,
+                NomeArtista = o.Artista.nome,
+                NomeAutor = o.Autor.nome,
+                Status = o.Status.nome,
                 AdultContent = o.AdultContent,
                 Banner = host +"/"+ o.CBanner.Replace("\\", "/"),
                 Generos = o.GeneroOrientoons.Select(g => new GeneroForm
                 {
                     Id = g.Genero.Id,
-                    Nome = g.Genero.NomeGenero
+                    Nome = g.Genero.nome
                 }).ToList(),
                 Tipos = o.TipoOrientoon.Select(t => new TipoForm
                 {
                     Id = t.Tipo.Id,
-                    Nome = t.Tipo.NomeTipo
+                    Nome = t.Tipo.nome
                 }
                 ).ToList()
             }).FirstOrDefaultAsync();
@@ -71,59 +63,32 @@ namespace OrientoonApi.Data.Repositories.Implementations
         }
 
 
-       /* public async Task<List<OrientoonForm>> GetByAmountAsync(int batchSize, int pageNumber)
+        public async Task<List<OrientoonForm>> GetByAmountAsync(int batchSize, int pageNumber)
         {
             //get orientoons quantity
             List<OrientoonForm> orientoonForms = await _context.Orientoons.Skip((pageNumber - 1) * batchSize).Take(batchSize).Select(o => new OrientoonForm
             {
 
                 Id = o.Id,
-                Titulo = o.Titulo,
+                Titulo = o.nome,
                 Descricao = o.Descricao,
                 DataLancamento = o.DataLancamento,
-                NomeArtista = o.Artista.NomeArtista,
-                NomeAutor = o.Autor.NomeAutor,
-                Status = o.Status.Status,
+                NomeArtista = o.Artista.nome,
+                NomeAutor = o.Autor.nome,
+                Status = o.Status.nome,
                 AdultContent = o.AdultContent,
                 Generos = o.GeneroOrientoons.Select(g => new GeneroForm
                 {
                     Id = g.Genero.Id,
-                    Nome = g.Genero.NomeGenero
+                    Nome = g.Genero.nome
                 }).ToList(),
                 Tipos = o.TipoOrientoon.Select(t => new TipoForm
                 {
                     Id = t.Tipo.Id,
-                    Nome = t.Tipo.NomeTipo
+                    Nome = t.Tipo.nome
                 }).ToList()
             }).ToListAsync();
             return orientoonForms;
-        }*/
-
-        //Put by id
-        public async Task UpdateAsync(OrientoonModel orientoonModel)
-        {
-            //convert OrientoonForm to OrientoonModel
-            
-
-
-            _context.Orientoons.Update(orientoonModel);
-        }
-
-        public async Task DeleteAsync(string id)
-        {
-            //delete orientoon by id
-            OrientoonModel orientoon = await _context.Orientoons.FirstOrDefaultAsync(x => x.Id == id);
-            _context.Orientoons.Remove(orientoon);
-        }
-
-        public async Task<bool> ExistBtIdAsync(string id)
-        {
-            return await _context.Orientoons.AnyAsync(x => x.Id == id);
-        }
-
-        public Task<bool> ExistByTituloAsync(string titulo)
-        {
-            return _context.Orientoons.AnyAsync(x => x.NormalizedTitulo == titulo.ToUpper());
         }
 
         public async Task<List<OrientoonForm>> SearchAsync( int batchSize, int pageNumber,SearchDto? searchDto)
@@ -138,28 +103,28 @@ namespace OrientoonApi.Data.Repositories.Implementations
                 query = query.Where(x => x.NormalizedTitulo.Contains(searchDto.titulo));
 
             if (searchDto.genero != null && searchDto.genero.Any())
-                query = query.Where(x => x.GeneroOrientoons.Any(g => searchDto.genero.Contains(g.Genero.NomeGenero)));
+                query = query.Where(x => x.GeneroOrientoons.Any(g => searchDto.genero.Contains(g.Genero.nome)));
 
             if(!string.IsNullOrEmpty(searchDto.tipo))
-                query = query.Where(x => x.TipoOrientoon.Any(t => t.Tipo.NomeTipo == searchDto.tipo));
+                query = query.Where(x => x.TipoOrientoon.Any(t => t.Tipo.nome == searchDto.tipo));
 
             if(!string.IsNullOrEmpty(searchDto.status))
-                query = query.Where(x => x.Status.Status == searchDto.status);
+                query = query.Where(x => x.Status.nome == searchDto.status);
 
             if(!string.IsNullOrEmpty(searchDto.autor))
-                query = query.Where(x => x.Autor.NomeAutor == searchDto.autor);
+                query = query.Where(x => x.Autor.nome == searchDto.autor);
 
             if(!string.IsNullOrEmpty(searchDto.artista))
-                query = query.Where(x => x.Artista.NomeArtista == searchDto.artista);
+                query = query.Where(x => x.Artista.nome == searchDto.artista);
 
 
             query = searchDto.orderBy switch
             {
-                "titulo" => query.OrderBy(x => x.Titulo),
+                "titulo" => query.OrderBy(x => x.nome),
                 "dataLancamento" => query.OrderBy(x => x.DataLancamento),
-                "Artista" => query.OrderBy(x => x.Artista.NomeArtista),
-                "Autor" => query.OrderBy(x => x.Autor.NomeAutor),
-                "status" => query.OrderBy(x => x.Status.Status),
+                "Artista" => query.OrderBy(x => x.Artista.nome),
+                "Autor" => query.OrderBy(x => x.Autor.nome),
+                "status" => query.OrderBy(x => x.Status.nome),
                 _ => query.OrderBy(x => x.DataLancamento) // Default ordering
             };
 
@@ -167,47 +132,29 @@ namespace OrientoonApi.Data.Repositories.Implementations
             return await query.Skip((pageNumber - 1) * batchSize).Take(batchSize).Select(o => new OrientoonForm
             {
                 Id = o.Id,
-                Titulo = o.Titulo,
+                Titulo = o.nome,
                 Descricao = o.Descricao,
                 DataLancamento = o.DataLancamento,
-                NomeArtista = o.Artista.NomeArtista,
-                NomeAutor = o.Autor.NomeAutor,
-                Status = o.Status.Status,
+                NomeArtista = o.Artista.nome,
+                NomeAutor = o.Autor.nome,
+                Status = o.Status.nome,
                 AdultContent = o.AdultContent,
                 Banner = host + "/"+ o.CBanner.Replace("\\", "/"),
                 Avaliacao = o.Avaliacao,
                 Generos = o.GeneroOrientoons.Select(g => new GeneroForm
                 {
                     Id = g.Genero.Id,
-                    Nome = g.Genero.NomeGenero
+                    Nome = g.Genero.nome
                 }).ToList(),
                 Tipos = o.TipoOrientoon.Select(t => new TipoForm
                 {
                     Id = t.Tipo.Id,
-                    Nome = t.Tipo.NomeTipo
+                    Nome = t.Tipo.nome
                 }).ToList()
 
             }).ToListAsync();
 
         }
-
-        /* public async Task<List<OrientoonForm>> FindByTituloAsync(string titulo)
-         {
-             List<OrientoonForm> orientoon = await _context.Orientoons.Where(x => x.NormalizedTitulo == titulo.ToUpper()).Select(o => new OrientoonForm
-             {
-
-                 Id = o.Id,
-                 Titulo = o.Titulo,
-                 Descricao = o.Descricao,
-                 DataLancamento = o.DataLancamento,
-                 NomeArtista = o.Artista.NomeArtista,
-                 NomeAutor = o.Autor.NomeAutor,
-                 Status = o.Status.Status,
-                 AdultContent = o.AdultContent
-             }).ToListAsync();
-             //return await _context.Orientoons.FirstOrDefaultAsync(x => x.NormalizedTitulo == titulo.ToUpper());
-             return orientoon;
-         }*/
 
     }
 }

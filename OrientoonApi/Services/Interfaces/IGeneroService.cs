@@ -1,4 +1,5 @@
-﻿using OrientoonApi.Models.Request;
+﻿using OrientoonApi.Models.Entities;
+using OrientoonApi.Models.Request;
 using OrientoonApi.Models.Response;
 
 namespace OrientoonApi.Services.Interfaces
@@ -7,8 +8,9 @@ namespace OrientoonApi.Services.Interfaces
     {
         Task<GeneroForm> CreateAsync(GeneroDto generoDto);
         Task DeleteAsync(string id);
+        Task<bool> ExistsByNameAsync(string nome);
+        Task<GeneroModel> GetByNomeAsync(string nome);
         Task<GeneroForm> GetAsync(string id);
-        Task<GeneroForm> GetByNomeAsync(string nome);
         Task<List<GeneroForm>> GetListAsync(int batchSize, int pageNumber);
         Task<GeneroForm> UpdateAsync(string id, GeneroDto generoDto);
     }

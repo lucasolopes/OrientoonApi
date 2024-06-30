@@ -4,17 +4,11 @@ using OrientoonApi.Models.Response;
 
 namespace OrientoonApi.Data.Repositories.Interfaces
 {
-    public interface IOrientoonRepository
+    public interface IOrientoonRepository : IGenericRepository<OrientoonModel>
     {
-        Task AddAsync(OrientoonModel orientoon);
-        Task DeleteAsync(string id);
-        Task<OrientoonForm> FindByIdAsync(string id);
-       // Task<List<OrientoonForm>> GetByAmountAsync(int batchSize, int pageNumber);
-        Task UpdateAsync(OrientoonModel orientoonModel);
-        Task<bool> ExistBtIdAsync(string id);
-        Task<bool> ExistByTituloAsync(string titulo);
-        Task<List<OrientoonForm>> SearchAsync( int batchSize, int pageNumber,SearchDto? searchDto);
-        Task<string> GetPathBannerById(string id);
-
+          //Task<OrientoonForm> GetByIdAsync(string id); criar override em GetByIdAsync
+          Task<OrientoonForm> GetByIdAsync(string id);
+          Task<List<OrientoonForm>> SearchAsync( int batchSize, int pageNumber,SearchDto? searchDto);
+          Task<string> GetPathBannerById(string id);
     }
 }

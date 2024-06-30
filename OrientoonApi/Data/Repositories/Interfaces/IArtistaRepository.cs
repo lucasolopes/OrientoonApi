@@ -2,15 +2,8 @@
 
 namespace OrientoonApi.Data.Repositories.Interfaces
 {
-    public interface IArtistaRepository
+    public interface IArtistaRepository : IGenericRepository<ArtistaModel>
     {
-        Task<ArtistaModel> FindByIdAsync(string id);
-        Task<ArtistaModel> FindByNomeAsync(string nome);
-        Task AddAsync(ArtistaModel artista);
-        Task DeleteAsync(string id);
-        Task UpdateAsync(ArtistaModel artistaModel);
-        Task<bool> ExistByNomeAsync(string nome);
-        Task<bool> ExistByIdAsync(string id);
-        Task<List<ArtistaModel>> GetByAmountAsync(int batchSize, int pageNumber);
+       
     }
 }

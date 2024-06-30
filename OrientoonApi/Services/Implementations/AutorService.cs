@@ -36,13 +36,13 @@ namespace OrientoonApi.Services.Implementations
             }
         }
 
-
+        //remover dps
         public async Task<AutorForm> GetAsync(string id)
         {
-            if (!await _autorRepository.ExistByIdAsync(id))
+            if (!await _autorRepository.ExistsByIdAsync(id))
                 throw new NotFoundException($"Autor com Id: {id} não encontrado.");
 
-            AutorModel AutorModel = await _autorRepository.FindByIdAsync(id);
+            AutorModel AutorModel = await _autorRepository.GetByIdAsync(id);
 
             return AutorModel.Converter();
         }
@@ -60,13 +60,13 @@ namespace OrientoonApi.Services.Implementations
 
         public async Task<AutorForm> UpdateAsync(string id, AutorDto AutorDto)
         {
-            if (!await _autorRepository.ExistByIdAsync(id))
+            if (!await _autorRepository.ExistsByIdAsync(id))
                 throw new NotFoundException($"Autor com Id: {id} não encontrado.");
 
-            AutorModel AutorModel = await _autorRepository.FindByIdAsync(id);
+            AutorModel AutorModel = await _autorRepository.GetByIdAsync(id);
 
             if (AutorDto.Nome != null)
-                AutorModel.NomeAutor = AutorDto.Nome;
+                AutorModel.nome = AutorDto.Nome;
 
             await _autorRepository.UpdateAsync(AutorModel);
             await _contextRepository.SaveChangesAsync();
@@ -75,7 +75,7 @@ namespace OrientoonApi.Services.Implementations
 
         public async Task DeleteAsync(string id)
         {
-            if (!await _autorRepository.ExistByIdAsync(id))
+            if (!await _autorRepository.ExistsByIdAsync(id))
                 throw new NotFoundException($"Autor com Id: {id} não encontrado.");
 
 
@@ -83,14 +83,21 @@ namespace OrientoonApi.Services.Implementations
             await _contextRepository.SaveChangesAsync();
         }
 
-        public async Task<AutorForm> GetByNomeAsync(string nome)
+
+        public async Task<AutorModel> GetByNomeAsync(string nomeAutor)
         {
-            if (!(await _autorRepository.ExistByNomeAsync(nome)))
-                throw new NotFoundException($"Autor com Nome: {nome} não encontrado.");
+            if (!(await _autorRepository.ExistsByNameAsync(nomeAutor)) || nomeAutor == "")
+                throw new NotFoundException($"Autor: {nomeAutor} não encontrado");
 
-            AutorModel AutorModel = await _autorRepository.FindByNomeAsync(nome);
+            return await _autorRepository.GetByNomeAsync(nomeAutor);
+        }
 
-            return AutorModel.Converter();
+        public async Task<AutorModel> GetByIdAsync(string autorId)
+        {
+            if (!await _autorRepository.ExistsByIdAsync(autorId))
+                throw new NotFoundException($"Autor com Id: {autorId} não encontrado.");
+
+           return await _autorRepository.GetByIdAsync(autorId);
         }
     }
 }

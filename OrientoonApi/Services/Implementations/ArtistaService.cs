@@ -1,4 +1,5 @@
-﻿using OrientoonApi.Data.Repositories.Interfaces;
+﻿using OrientoonApi.Data.Repositories.Implementations;
+using OrientoonApi.Data.Repositories.Interfaces;
 using OrientoonApi.Infrastructure.Exceptions;
 using OrientoonApi.Models.Entities;
 using OrientoonApi.Models.Request;
@@ -39,10 +40,10 @@ namespace OrientoonApi.Services.Implementations
 
         public async Task<ArtistaForm> GetAsync(string id)
         {
-            if(!await _artistaRepository.ExistByIdAsync(id))
+            if(!await _artistaRepository.ExistsByIdAsync(id))
                 throw new NotFoundException($"Artista com Id: {id} não encontrado.");
             
-            ArtistaModel artistaModel = await _artistaRepository.FindByIdAsync(id);
+            ArtistaModel artistaModel = await _artistaRepository.GetByIdAsync(id);
 
             return artistaModel.Converter();
         }
@@ -61,22 +62,22 @@ namespace OrientoonApi.Services.Implementations
 
         public async Task<ArtistaForm> UpdateAsync(string id, ArtistaDto artistaDto)
         {
-            if(!await _artistaRepository.ExistByIdAsync(id))
-                throw new NotFoundException($"Artista com Id: {id} não encontrado.");
-            
-            ArtistaModel artistaModel = await _artistaRepository.FindByIdAsync(id);
+             if(!await _artistaRepository.ExistsByIdAsync(id))
+                 throw new NotFoundException($"Artista com Id: {id} não encontrado.");
 
-            if(artistaDto.Nome != null)
-                artistaModel.NomeArtista = artistaDto.Nome;
-            
-            await _artistaRepository.UpdateAsync(artistaModel);
-            await _contextRepository.SaveChangesAsync();
-            return artistaModel.Converter();
+             ArtistaModel artistaModel = await _artistaRepository.GetByIdAsync(id);
+
+             if(artistaDto.Nome != null)
+                 artistaModel.nome = artistaDto.Nome;
+
+             await _artistaRepository.UpdateAsync(artistaModel);
+             await _contextRepository.SaveChangesAsync();
+             return artistaModel.Converter();
         }
 
         public async Task DeleteAsync(string id)
         {
-            if(!await _artistaRepository.ExistByIdAsync(id))
+            if(!await _artistaRepository.ExistsByIdAsync(id))
                 throw new NotFoundException($"Artista com Id: {id} não encontrado.");
             
 
@@ -84,14 +85,23 @@ namespace OrientoonApi.Services.Implementations
             await _contextRepository.SaveChangesAsync();
         }
 
-        public async Task<ArtistaForm> GetByNomeAsync(string nome)
+
+        public async Task<ArtistaModel> GetByNomeAsync(string nomeArtista)
         {
-            if(!(await _artistaRepository.ExistByNomeAsync(nome)))
-                throw new NotFoundException($"Artista com Nome: {nome} não encontrado.");
 
-            ArtistaModel artistaModel = await _artistaRepository.FindByNomeAsync(nome);
+            if (!(await _artistaRepository.ExistsByNameAsync(nomeArtista)) || nomeArtista == "")
+                throw new NotFoundException($"Artista: {nomeArtista} não encontrado");
 
-            return artistaModel.Converter();
+
+            return await _artistaRepository.GetByNomeAsync(nomeArtista);
+        }
+
+        public async Task<ArtistaModel> GetByIdAsync(string artistaId)
+        {
+            if (!await _artistaRepository.ExistsByIdAsync(artistaId))
+                throw new NotFoundException($"Artista com Id: {artistaId} não encontrado.");
+
+            return await _artistaRepository.GetByIdAsync(artistaId);
         }
     }
 }

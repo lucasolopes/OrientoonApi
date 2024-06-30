@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OrientoonApi.Models.Entities;
 using OrientoonApi.Models.Request;
 using OrientoonApi.Models.Response;
 using OrientoonApi.Services.Interfaces;
@@ -101,8 +102,8 @@ namespace OrientoonApi.Controllers
         {
             try
             {
-                ArtistaForm artista = await _artistaService.GetByNomeAsync(nome);
-                return Ok(artista);
+                ArtistaModel artista = await _artistaService.GetByNomeAsync(nome);
+                return Ok(artista.Converter());
             }
             catch (Exception e)
             {
