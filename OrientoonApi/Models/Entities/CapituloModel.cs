@@ -9,10 +9,10 @@ namespace OrientoonApi.Models.Entities
         {
             [Key]
             [Required]
-            public string Id { get; set; }
+            public string Id { get; set; } = Guid.NewGuid().ToString();
 
             [Required]
-            public int NumCapitulo { get; set; }
+            public Double NumCapitulo { get; set; }
 
             [Required]
             [MaxLength(255)]
@@ -20,12 +20,6 @@ namespace OrientoonApi.Models.Entities
             [DataType(DataType.Text)]
             [StringLength(255)]
             public string Caminho { get; set; }
-
-            [MaxLength(255)]
-            [MinLength(1)]
-            [DataType(DataType.Text)]
-            [StringLength(255)]
-            public string Link { get; set; }
 
             [Required]
             public DateOnly DataLancamento { get; set; }
@@ -35,5 +29,7 @@ namespace OrientoonApi.Models.Entities
             public string OrientoonId { get; set; }
 
             public OrientoonModel Orientoon { get; set; }
+
+            public List<ImagemModel> Imagens { get; set; }
         }
 }
