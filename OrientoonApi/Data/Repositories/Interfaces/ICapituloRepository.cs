@@ -1,11 +1,11 @@
-﻿using OrientoonApi.Models.Entities;
+﻿    using OrientoonApi.Models.Entities;
 
 namespace OrientoonApi.Data.Repositories.Interfaces
 {
     public interface ICapituloRepository 
     {
-        Task<CapituloModel> AddCapituloAsync(CapituloModel capitulo);
-        Task<CapituloModel> GetCapituloByIdAsync(string id);
+        Task<CapituloModel> AddAsync(CapituloModel capitulo);
+        Task<CapituloModel> GetByIdAsync(string id);
 
     }
 }
