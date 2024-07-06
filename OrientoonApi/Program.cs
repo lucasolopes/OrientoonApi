@@ -88,6 +88,9 @@ builder.Services.AddScoped<IGeneroRepository, GeneroRepository>();
 builder.Services.AddScoped<ITipoRepository, TipoRepository>();
 builder.Services.AddScoped<IGeneroOrientoonRepository, GeneroOrientoonRepository>();
 builder.Services.AddScoped<ITipoOrientoonRepository, TipoOrientoonRepository>();
+builder.Services.AddScoped<ICapituloRepository, CapituloRepository>();
+builder.Services.AddScoped<IImagemRepository, ImagemRepository>();
+
 
 
 builder.Services.AddScoped<IOrientoonService ,OrientoonService>();
@@ -97,6 +100,10 @@ builder.Services.AddScoped<IStatusService, StatusService>();
 builder.Services.AddScoped<IGeneroService, GeneroService>();
 builder.Services.AddScoped<ITipoService, TipoService>();
 builder.Services.AddScoped<ICapituloService, CapituloService>();
+
+
+
+
 
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
