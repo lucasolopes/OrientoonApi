@@ -1,4 +1,5 @@
-﻿using OrientoonApi.Data.Contexts;
+﻿using Microsoft.EntityFrameworkCore;
+using OrientoonApi.Data.Contexts;
 using OrientoonApi.Data.Repositories.Interfaces;
 using OrientoonApi.Models.Entities;
 
@@ -13,14 +14,16 @@ namespace OrientoonApi.Data.Repositories.Implementations
             _context = context;
         }
 
-        public Task<CapituloModel> AddCapituloAsync(CapituloModel capitulo)
+        public async Task<CapituloModel> AddCapituloAsync(CapituloModel capitulo)
         {
-            throw new NotImplementedException();
+            _context.Capitulo.Add(capitulo);
+            await _context.SaveChangesAsync();
+            return capitulo;
         }
 
-        public Task<CapituloModel> GetCapituloByIdAsync(string id)
+        public async Task<CapituloModel> GetCapituloByIdAsync(string id)
         {
-            throw new NotImplementedException();
+            return await _context.Capitulo.FirstOrDefaultAsync(c => c.Id == id);
         }
     }
 }
