@@ -19,6 +19,7 @@ namespace OrientoonApi.Data.Contexts
         public DbSet<GeneroModel> Genero { get; set; }
         public DbSet<TipoModel> Tipo { get; set; }
         public DbSet<StatusModel> Status { get; set; }
+        public DbSet<ImagemModel> Imagem { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -52,6 +53,11 @@ namespace OrientoonApi.Data.Contexts
                 .HasOne(us => us.Tipo)
                 .WithMany(s => s.TipoOrientoon)
                 .HasForeignKey(us => us.IdTipo);
+
+            modelBuilder.Entity<CapituloModel>()
+                .HasMany(c => c.Imagens)
+                .WithOne(i => i.Capitulo)
+                .HasForeignKey(i => i.CapituloId);
 
         }
     }
