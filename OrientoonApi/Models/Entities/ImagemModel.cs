@@ -6,6 +6,7 @@
         public string NomeArquivo { get; set; }
         public int Ordem { get; set; }
         public string CapituloId { get; set; }
+        public string Caminho { get; set; }
         public CapituloModel Capitulo { get; set; }
     }
 }
