@@ -24,8 +24,9 @@ namespace OrientoonApi.Services.Implementations
         private readonly IGeneroOrientoonRepository _generoOrientoonRepository;
         private readonly ITipoOrientoonRepository _tipoOrientoonRepository;
 		private readonly ITipoService _tipoService;
+        private readonly IConfiguration _configuration;
 
-        public OrientoonService(IOrientoonRepository orientoonRepository, IContextRepository contextRepository,IGeneroOrientoonRepository generoOrientoonRepository, ITipoOrientoonRepository tipoOrientoonRepository, IHttpContextAccessor httpContextAccessor, IArtistaService artistaService, IAutorService autorService, IStatusService statusService, IGeneroService generoService, ITipoService tipoService)
+        public OrientoonService(IOrientoonRepository orientoonRepository, IContextRepository contextRepository,IGeneroOrientoonRepository generoOrientoonRepository, ITipoOrientoonRepository tipoOrientoonRepository, IHttpContextAccessor httpContextAccessor, IArtistaService artistaService, IAutorService autorService, IStatusService statusService, IGeneroService generoService, ITipoService tipoService, IConfiguration configuration)
 		{
 			_orientoonRepository = orientoonRepository;
 
@@ -38,6 +39,7 @@ namespace OrientoonApi.Services.Implementations
 			_generoOrientoonRepository = generoOrientoonRepository;
             _tipoOrientoonRepository = tipoOrientoonRepository;
 			_tipoService = tipoService;
+			_configuration = configuration;
         }
 
 		public async Task<OrientoonForm> CreateAsync(OrientoonDto orientoonDto, IFormFile banner)
@@ -64,9 +66,10 @@ namespace OrientoonApi.Services.Implementations
 
         }
 
-        private static async Task<string> SaveBanner(IFormFile banner, OrientoonModel orientoonModel)
+        private async Task<string> SaveBanner(IFormFile banner, OrientoonModel orientoonModel)
         {
-            var bannerDirectory = Path.Combine("Arquivos\\Projetos", "Orientoons", orientoonModel.Id);
+            var uploadPath = _configuration["FileUploadPath"];
+            var bannerDirectory = Path.Combine(uploadPath, orientoonModel.Id);
             if (!Directory.Exists(bannerDirectory))
                 Directory.CreateDirectory(bannerDirectory);
 
@@ -77,7 +80,7 @@ namespace OrientoonApi.Services.Implementations
                 await banner.CopyToAsync(stream);
             }
 
-            return filePath;
+            return Path.Combine(orientoonModel.Id, fileName);
         }
 
 
@@ -88,8 +91,8 @@ namespace OrientoonApi.Services.Implementations
 
             var request = _httpContextAccessor.HttpContext.Request;
             OrientoonForm orientoonForm = await _orientoonRepository.GetByIdAsync(id);
-            var host = $"{request.Scheme}://{request.Host}";
-            orientoonForm.Banner = host + orientoonForm.Banner;
+           // var host = $"{request.Scheme}://{request.Host}/imagens/";
+           // orientoonForm.Banner = host + orientoonForm.Banner;
             return orientoonForm;
         }
 
