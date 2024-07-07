@@ -2,28 +2,65 @@
 using OrientoonApi.Data.Contexts;
 using OrientoonApi.Data.Repositories.Interfaces;
 using OrientoonApi.Models.Entities;
+using OrientoonApi.Models.Response;
 
 namespace OrientoonApi.Data.Repositories.Implementations
 {
     public class CapituloRepository : ICapituloRepository
     {
         private readonly OrientoonContext _context;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public CapituloRepository(OrientoonContext context)
+        public CapituloRepository(OrientoonContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<CapituloModel> AddCapituloAsync(CapituloModel capitulo)
+        public async Task<CapituloForm> AddAsync(CapituloModel capitulo)
         {
             _context.Capitulo.Add(capitulo);
             await _context.SaveChangesAsync();
-            return capitulo;
+            var request = _httpContextAccessor.HttpContext.Request;
+
+            var host = $"{request.Scheme}://{request.Host}/imagens";
+
+            CapituloForm capituloForm = new CapituloForm
+            {
+                Id = capitulo.Id,
+                NumCapitulo = capitulo.NumCapitulo,
+                OrientoonId = capitulo.OrientoonId,
+                Imagens = capitulo.Imagens.Select(i => new ImagemForm
+                {
+                    Id = i.Id,
+                    Caminho = host + "/" + i.Caminho.Replace("\\", "/"),
+                    CapituloId = i.CapituloId,
+                    Ordem = i.Ordem,
+                }).ToList()
+            };
+
+            return capituloForm;
         }
 
-        public async Task<CapituloModel> GetCapituloByIdAsync(string id)
+        public async Task<CapituloForm> GetByIdAsync(string id)
         {
-            return await _context.Capitulo.FirstOrDefaultAsync(c => c.Id == id);
+            var request = _httpContextAccessor.HttpContext.Request;
+
+            var host = $"{request.Scheme}://{request.Host}/imagens";
+
+            return await _context.Capitulo.Where(x => x.Id == id).Select(c => new CapituloForm
+            {
+                Id = c.Id,
+                NumCapitulo = c.NumCapitulo,
+                OrientoonId = c.OrientoonId,
+                Imagens = c.Imagens.Select(i => new ImagemForm
+                {
+                    Id = i.Id,
+                    Caminho = host + "/" + i.Caminho.Replace("\\", "/"),
+                    CapituloId = i.CapituloId,
+                    Ordem = i.Ordem,
+                }).ToList()
+            }).FirstOrDefaultAsync();
         }
     }
 }
