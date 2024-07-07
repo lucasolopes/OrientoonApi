@@ -27,7 +27,7 @@ namespace OrientoonApi.Data.Repositories.Implementations
 
             var request = _httpContextAccessor.HttpContext.Request;
 
-            var host = $"{request.Scheme}://{request.Host}";
+            var host = $"{request.Scheme}://{request.Host}/imagens";
 
             OrientoonForm orientoon = await _context.Orientoons.Where(x => x.Id == id).Select(o => new OrientoonForm
             {
@@ -62,40 +62,11 @@ namespace OrientoonApi.Data.Repositories.Implementations
             return await _context.Orientoons.Where(x => x.Id == id).Select(x => x.CBanner).FirstOrDefaultAsync();
         }
 
-
-        public async Task<List<OrientoonForm>> GetByAmountAsync(int batchSize, int pageNumber)
-        {
-            //get orientoons quantity
-            List<OrientoonForm> orientoonForms = await _context.Orientoons.Skip((pageNumber - 1) * batchSize).Take(batchSize).Select(o => new OrientoonForm
-            {
-
-                Id = o.Id,
-                Titulo = o.nome,
-                Descricao = o.Descricao,
-                DataLancamento = o.DataLancamento,
-                NomeArtista = o.Artista.nome,
-                NomeAutor = o.Autor.nome,
-                Status = o.Status.nome,
-                AdultContent = o.AdultContent,
-                Generos = o.GeneroOrientoons.Select(g => new GeneroForm
-                {
-                    Id = g.Genero.Id,
-                    Nome = g.Genero.nome
-                }).ToList(),
-                Tipos = o.TipoOrientoon.Select(t => new TipoForm
-                {
-                    Id = t.Tipo.Id,
-                    Nome = t.Tipo.nome
-                }).ToList()
-            }).ToListAsync();
-            return orientoonForms;
-        }
-
         public async Task<List<OrientoonForm>> SearchAsync( int batchSize, int pageNumber,SearchDto? searchDto)
         {
             var request = _httpContextAccessor.HttpContext.Request;
 
-            var host = $"{request.Scheme}://{request.Host}";
+            var host = $"{request.Scheme}://{request.Host}/imagens";
 
             var query = _context.Orientoons.AsQueryable();
 
