@@ -51,7 +51,7 @@ builder.Services.AddControllers(options =>
    // options.SerializerSettings.DateFormatString = "dd/MM/yyyy HH:mm:ss";
     options.SerializerSettings.Culture = new CultureInfo("pt-BR");
     options.SerializerSettings.Converters.Add(new StrictDateTimeConverter());
-   
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 }).ConfigureApiBehaviorOptions(options =>
 {
    // options.SuppressModelStateInvalidFilter = true; 
@@ -120,13 +120,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseStaticFiles();
+var imageFolderPath = builder.Configuration["FileUploadPath"];
 
 app.UseStaticFiles(new StaticFileOptions
 {
-    FileProvider = new PhysicalFileProvider(
-        Path.Combine(Directory.GetCurrentDirectory(), "Arquivos")),
-    RequestPath = "/Arquivos"
+    FileProvider = new PhysicalFileProvider(imageFolderPath),
+    RequestPath = "/imagens" // O caminho base para acessar as imagens
 });
 
 app.UseHttpsRedirection();
