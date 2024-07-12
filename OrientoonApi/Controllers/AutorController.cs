@@ -93,21 +93,5 @@ namespace OrientoonApi.Controllers
                 return BadRequest(e.Message);
             }
         }
-
-        [HttpGet("nome/{nome}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<AutorForm>> GetByNome(string nome)
-        {
-            try
-            {
-                AutorModel autor = await _autorService.GetByNomeAsync(nome);
-                return Ok(autor.Converter());
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
     }
 }
