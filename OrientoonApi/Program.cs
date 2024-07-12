@@ -52,6 +52,8 @@ builder.Services.AddControllers(options =>
     options.SerializerSettings.Culture = new CultureInfo("pt-BR");
     options.SerializerSettings.Converters.Add(new StrictDateTimeConverter());
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+
+    options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
 }).ConfigureApiBehaviorOptions(options =>
 {
    // options.SuppressModelStateInvalidFilter = true; 
