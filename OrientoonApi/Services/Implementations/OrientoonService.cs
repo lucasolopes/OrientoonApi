@@ -44,20 +44,16 @@ namespace OrientoonApi.Services.Implementations
 
 		public async Task<OrientoonForm> CreateAsync(OrientoonDto orientoonDto, IFormFile banner)
         {
-            OrientoonModel orientoonModel = orientoonDto.Converter();
-            //orientoonModel id randon text somente letras e numeros
-            orientoonModel.Id = Guid.NewGuid().ToString("N");
-
-            //implmentar na propria controller depois
+			OrientoonModel orientoonModel = new OrientoonModel(orientoonDto);
 
             string filePath = await SaveBanner(banner, orientoonModel);
 
             orientoonModel.CBanner = filePath;
 
-            orientoonModel.Artista = await _artistaService.GetByNomeAsync(orientoonDto.NomeArtista);
-            orientoonModel.Autor = await _autorService.GetByNomeAsync(orientoonDto.NomeAutor);
-            orientoonModel.Status = await _statusService.GetByNomeAsync(orientoonDto.Status);
-            orientoonModel.NormalizedTitulo = orientoonModel.nome.ToUpper(CultureInfo.InvariantCulture);
+            orientoonModel.Artista = await _artistaService.GetByIdAsync(orientoonDto.IdArtista);
+            orientoonModel.Autor = await _autorService.GetByIdAsync(orientoonDto.IdAutor);
+            orientoonModel.Status = await _statusService.GetByIdAsync(orientoonDto.IdStatus);
+            orientoonModel.NormalizedName = orientoonModel.nome.ToUpper(CultureInfo.InvariantCulture);
 
             await _orientoonRepository.AddAsync(orientoonModel);
             await _contextRepository.SaveChangesAsync();
@@ -111,44 +107,55 @@ namespace OrientoonApi.Services.Implementations
 
 		public async Task<OrientoonForm> UpdateAsync(string id, OrientoonPutDto orientoon)
 		{
+			OrientoonModel oldOrientoon = await _orientoonRepository.GetModelByIdAsync(id);
 
-			if(!(await _orientoonRepository.ExistsByIdAsync(id)))
-				throw new NotFoundException($"Orientoon Id: {id} não encontrado");
+			OrientoonModel newOrientoon = new OrientoonModel(orientoon);
 
-			OrientoonModel oldOrientoon = (await _orientoonRepository.GetByIdAsync(id)).Converter();
+			ArtistaModel newArtista = new ArtistaModel();
+			AutorModel newAutor = new AutorModel();
 
-			OrientoonModel newOrientoon = orientoon.Converter();
+			StatusModel newStatus = null;
 
-
-			ArtistaModel newArtista = await _artistaService.GetByNomeAsync(orientoon.NomeArtista);
-
-            AutorModel newAutor = await _autorService.GetByNomeAsync(orientoon.NomeAutor);
-
-			StatusModel newStatus = await _statusService.GetByNomeAsync(orientoon.Status);
-
-            AutorModel oldAutor = await _autorService.GetByIdAsync(oldOrientoon.ArtistaId);
-
-			ArtistaModel oldArtista = await _artistaService.GetByIdAsync(oldOrientoon.ArtistaId);
+			if(orientoon.IdArtista != null)
+				newArtista = await _artistaService.GetByIdAsync(orientoon.IdArtista);
 			
-			StatusModel oldStatus = await _statusService.GetByIdAsync(oldOrientoon.StatusId);
+			if(orientoon.IdAutor != null)
+                newAutor = await _autorService.GetByIdAsync(orientoon.IdAutor);
+
+			if(orientoon.Status != null)
+                newStatus = await _statusService.GetByNameAsync(orientoon.Status);
+
+            
+			ArtistaModel oldArtista = await _artistaService.GetByIdAsync(oldOrientoon.ArtistaId);
+
+            AutorModel oldAutor = await _autorService.GetByIdAsync(oldOrientoon.AutorId);
+
+
+            StatusModel oldStatus = await _statusService.GetByIdAsync(oldOrientoon.StatusId);
+
+			oldOrientoon.AdultContent = orientoon.AdultContent ?? oldOrientoon.AdultContent;
 
 			//verifique se os valores são diferentes e nao nulos e atualize
-			if (newOrientoon.nome != "" && newOrientoon.nome != oldOrientoon.nome)
+			if (newOrientoon.nome != null && newOrientoon.nome != oldOrientoon.nome)
 				oldOrientoon.nome = newOrientoon.nome;
 			
-			if (newOrientoon.Descricao != "" && newOrientoon.Descricao != oldOrientoon.Descricao)
+			if (newOrientoon.Descricao != null && newOrientoon.Descricao != oldOrientoon.Descricao)
 				oldOrientoon.Descricao = newOrientoon.Descricao;
 			
 			if (newOrientoon.DataLancamento != null && newOrientoon.DataLancamento != oldOrientoon.DataLancamento)
 				oldOrientoon.DataLancamento = newOrientoon.DataLancamento;
+
+			if(newOrientoon.Status != null && newOrientoon.Status != oldOrientoon.Status)
+				oldOrientoon.Status = newOrientoon.Status;
 			
-			if (newArtista.nome != oldArtista.nome)
+			if (newArtista.nome != oldArtista.nome && newArtista.nome != null)
 				oldOrientoon.Artista = newArtista;
 			
-			if (newAutor.nome != oldAutor.nome)
+			if (newAutor.nome != oldAutor.nome && newAutor.nome != null)
 				oldOrientoon.Autor = newAutor;
-			
-			if(newStatus.nome != oldStatus.nome)
+
+			if (newStatus != null)
+				if(newStatus.nome != oldStatus.nome )
                 oldOrientoon.Status = newStatus;
 
 			await _orientoonRepository.UpdateAsync(oldOrientoon);
@@ -182,6 +189,8 @@ namespace OrientoonApi.Services.Implementations
 
 			if (await _generoOrientoonRepository.ExistByGeneroIdAsync(id, generoDto.Nome))
 				throw new ConflictException($"Genero: {generoDto.Nome} já existe no Orientoon");
+
+
 
 			GeneroModel genero = await _generoService.GetByNomeAsync(generoDto.Nome);
 			await _generoOrientoonRepository.AddAsync(id, genero.Id);
