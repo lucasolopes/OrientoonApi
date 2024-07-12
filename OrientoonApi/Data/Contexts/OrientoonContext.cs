@@ -59,6 +59,11 @@ namespace OrientoonApi.Data.Contexts
                 .WithOne(i => i.Capitulo)
                 .HasForeignKey(i => i.CapituloId);
 
+            modelBuilder.Entity<StatusModel>()
+                .Property(p => p.nome)
+                .HasConversion<string>();
+                
+
         }
     }
 }
