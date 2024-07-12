@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OrientoonApi.Models.Request;
 using OrientoonApi.Services.Interfaces;
 
 namespace OrientoonApi.Controllers
@@ -14,14 +15,14 @@ namespace OrientoonApi.Controllers
         }
 
         [HttpPost("{orientoonId}")]
-        public async Task<IActionResult> UploadCapitulo(string orientoonId, [FromForm] double numCap, [FromForm] IList<IFormFile> files)
+        public async Task<IActionResult> UploadCapitulo(string orientoonId,[FromForm] CapituloDto capituloDto)
         {
-            if (files == null || files.Count == 0)
+            if (capituloDto.files == null || capituloDto.files.Count == 0)
             {
                 return BadRequest("No files provided.");
             }
 
-            var capitulo = await _capituloService.AddCapituloAsync(orientoonId, numCap, files);
+            var capitulo = await _capituloService.AddCapituloAsync(orientoonId, capituloDto);
             return Ok(capitulo);
         }
 
