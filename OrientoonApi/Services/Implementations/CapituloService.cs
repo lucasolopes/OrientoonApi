@@ -1,6 +1,7 @@
 ﻿using OrientoonApi.Data.Repositories.Implementations;
 using OrientoonApi.Data.Repositories.Interfaces;
 using OrientoonApi.Models.Entities;
+using OrientoonApi.Models.Request;
 using OrientoonApi.Models.Response;
 using OrientoonApi.Services.Interfaces;
 using static System.Net.Mime.MediaTypeNames;
@@ -24,23 +25,18 @@ namespace OrientoonApi.Services.Implementations
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<CapituloForm> AddCapituloAsync(string orientoonId, double numCap, IList<IFormFile> files)
+        public async Task<CapituloForm> AddCapituloAsync(string orientoonId, CapituloDto capituloDto)
         {
             var request = _httpContextAccessor.HttpContext.Request;
 
             var host = $"{request.Scheme}://{request.Host}/imagens";
 
             var uploadPath = _configuration["FileUploadPath"];
-            var capitulo = new CapituloModel
-            {
-                OrientoonId = orientoonId,
-                NumCapitulo = numCap,
-                Caminho = Path.Combine( orientoonId, numCap.ToString()),
-            };
+            var capitulo = new CapituloModel(capituloDto, orientoonId, Path.Combine(orientoonId, capituloDto.numCap.ToString()));
 
             int ordem = 1;
 
-            foreach (var file in files)
+            foreach (var file in capituloDto.files)
             {
                 var fileExtension = Path.GetExtension(file.FileName).ToLower();
                 if (fileExtension == ".png" || fileExtension == ".jpg" || fileExtension == ".jpeg" || fileExtension == ".webp")

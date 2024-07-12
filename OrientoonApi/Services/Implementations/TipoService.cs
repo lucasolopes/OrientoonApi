@@ -21,7 +21,7 @@ namespace OrientoonApi.Services.Implementations
 
         public async Task<TipoForm> CreateAsync(TipoDto tipoDto)
         {
-            TipoModel tipoModel = tipoDto.Converter();
+            TipoModel tipoModel = new TipoModel(tipoDto);
             await _tipoRepository.AddAsync(tipoModel);
             await _contextRepository.SaveChangesAsync();
             return tipoModel.Converter();
@@ -31,7 +31,7 @@ namespace OrientoonApi.Services.Implementations
         {
             foreach (TipoDto tipo in tipoDto)
             {
-                TipoModel tipoModel = tipo.Converter();
+                TipoModel tipoModel = new TipoModel(tipo);
                 await _tipoRepository.AddAsync(tipoModel);
             }
         }

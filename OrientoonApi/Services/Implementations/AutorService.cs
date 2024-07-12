@@ -21,7 +21,7 @@ namespace OrientoonApi.Services.Implementations
 
         public async Task<AutorForm> CreateAsync(AutorDto AutorDto)
         {
-            AutorModel AutorModel = AutorDto.Converter();
+            AutorModel AutorModel = new AutorModel(AutorDto);
             await _autorRepository.AddAsync(AutorModel);
             await _contextRepository.SaveChangesAsync();
             return AutorModel.Converter();
@@ -31,8 +31,7 @@ namespace OrientoonApi.Services.Implementations
         {
             foreach (AutorDto Autor in AutorDto)
             {
-                AutorModel AutorModel = Autor.Converter();
-                await _autorRepository.AddAsync(AutorModel);
+                await CreateAsync(Autor);
             }
         }
 

@@ -21,7 +21,7 @@ namespace OrientoonApi.Services.Implementations
 
         public async Task<GeneroForm> CreateAsync(GeneroDto generoDto)
         {
-            GeneroModel generoModel = generoDto.Converter();
+            GeneroModel generoModel = new GeneroModel(generoDto);
             await _generoRepository.AddAsync(generoModel);
             await _contextRepository.SaveChangesAsync();
             return generoModel.Converter();
@@ -31,8 +31,7 @@ namespace OrientoonApi.Services.Implementations
         {
             foreach (GeneroDto genero in generoDto)
             {
-                GeneroModel generoModel = genero.Converter();
-                await _generoRepository.AddAsync(generoModel);
+                await CreateAsync(genero);
             }
         }
 

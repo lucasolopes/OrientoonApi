@@ -22,7 +22,7 @@ namespace OrientoonApi.Services.Implementations
 
         public async Task<ArtistaForm> CreateAsync(ArtistaDto artistaDto)
         {
-            ArtistaModel artistaModel = artistaDto.Converter();
+            ArtistaModel artistaModel = new ArtistaModel(artistaDto);
             await _artistaRepository.AddAsync(artistaModel);
             await _contextRepository.SaveChangesAsync();
             return artistaModel.Converter();
@@ -32,8 +32,7 @@ namespace OrientoonApi.Services.Implementations
         {
             foreach (ArtistaDto artista in artistaDto)
             {
-                ArtistaModel artistaModel = artista.Converter();
-                await _artistaRepository.AddAsync(artistaModel);
+                await CreateAsync(artista);
             }
         }
 
