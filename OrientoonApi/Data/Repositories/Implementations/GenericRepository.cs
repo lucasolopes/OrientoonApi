@@ -18,12 +18,6 @@ namespace OrientoonApi.Data.Repositories.Implementations
 
         public virtual async Task AddAsync(T entity)
         {
-            var propertyInfo = entity.GetType().GetProperty("Id");
-            if (propertyInfo != null && propertyInfo.PropertyType == typeof(string) && propertyInfo.GetValue(entity) == null)
-            {
-                // Gera um novo GUID e define o valor da propriedade "Id"
-                propertyInfo.SetValue(entity, Guid.NewGuid().ToString("N"));
-            }
             await _dbSet.AddAsync(entity);
         }
 
