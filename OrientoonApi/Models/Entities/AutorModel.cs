@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using OrientoonApi.Models.Response;
+using OrientoonApi.Models.Request;
 
 namespace OrientoonApi.Models.Entities
 {
@@ -9,11 +10,19 @@ namespace OrientoonApi.Models.Entities
         [Table("Autor")]
         public class AutorModel
         {
-            [JsonIgnore]
-            public string Id { get; set; }
+            public AutorModel() {}
+        
+            public AutorModel(AutorDto autorDto)
+            {
+                nome = autorDto.Nome;
+            }
 
-            //  [JsonProperty("NomeAutor")]
-            [DataType(DataType.Text)]
+            [Key]
+            [JsonIgnore]
+            public string Id { get; set; } = Guid.NewGuid().ToString("N");
+
+        //  [JsonProperty("NomeAutor")]
+        [DataType(DataType.Text)]
             [Column("nome")]
             public string nome { get; set; }
 

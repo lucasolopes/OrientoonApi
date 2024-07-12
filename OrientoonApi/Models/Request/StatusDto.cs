@@ -1,4 +1,5 @@
-﻿using OrientoonApi.Models.Entities;
+﻿using OrientoonApi.Enum;
+using OrientoonApi.Models.Entities;
 using System.ComponentModel.DataAnnotations;
 
 namespace OrientoonApi.Models.Request
@@ -7,13 +8,7 @@ namespace OrientoonApi.Models.Request
     {
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]
 
-        public string Status { get; set; }
-        public StatusModel Converter()
-        {
-            return new StatusModel
-            {
-                nome = this.Status
-            };
-        }
+        public StatusEnum? Status { get; set; }
+        
     }
 }

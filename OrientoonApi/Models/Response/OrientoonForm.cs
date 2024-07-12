@@ -1,4 +1,5 @@
 ﻿
+using OrientoonApi.Enum;
 using OrientoonApi.Models.Entities;
 using System.ComponentModel.DataAnnotations;
 
@@ -16,7 +17,7 @@ namespace OrientoonApi.Models.Response
         public double Avaliacao { get; set; }
         public string NomeArtista { get; set; }
         public string NomeAutor { get; set; }
-        public string Status { get; set; }
+        public StatusEnum Status { get; set; }
         public bool AdultContent { get; set; }
         public List<GeneroForm> Generos { get; set; }
         public List<TipoForm> Tipos { get; set; }

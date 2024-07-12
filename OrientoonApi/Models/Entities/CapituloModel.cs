@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using OrientoonApi.Models.Response;
+using OrientoonApi.Models.Request;
 
 namespace OrientoonApi.Models.Entities
 {
@@ -7,6 +9,16 @@ namespace OrientoonApi.Models.Entities
         [Table("Capitulo")]
         public class CapituloModel
         {
+            public CapituloModel() { }
+
+            public CapituloModel(CapituloDto capituloDto, string orientoonId,string caminho)
+            {
+                NumCapitulo = capituloDto.numCap;
+                DataLancamento = capituloDto.dataLancamento;
+                OrientoonId = orientoonId;
+                Caminho = caminho;
+            }
+
             [Key]
             [Required]
             public string Id { get; set; } = Guid.NewGuid().ToString();
@@ -22,7 +34,7 @@ namespace OrientoonApi.Models.Entities
             public string Caminho { get; set; }
 
             [Required]
-            public DateOnly DataLancamento { get; set; }
+            public DateTime? DataLancamento { get; set; }
 
             public Double AvaliacaoCap { get; set; }
 

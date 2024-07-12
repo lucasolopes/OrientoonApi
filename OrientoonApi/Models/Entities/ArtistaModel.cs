@@ -2,14 +2,25 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using OrientoonApi.Models.Response;
+using OrientoonApi.Models.Request;
 
 namespace OrientoonApi.Models.Entities
 {
     [Table("Artista")]
     public class ArtistaModel
     {
+        public ArtistaModel ()
+        {
+        }
+
+        public ArtistaModel (ArtistaDto artistaDto)
+        {
+            this.nome = artistaDto.Nome;
+        }
+
+        [Key]
         [JsonIgnore]
-        public string Id { get; set; }
+        public string Id { get; set; } = Guid.NewGuid().ToString("N");
 
         //[JsonProperty("NomeArtista")]
         [DataType(DataType.Text)]

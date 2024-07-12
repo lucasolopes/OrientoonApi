@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using OrientoonApi.Enum;
 using OrientoonApi.Models.Entities;
 using OrientoonApi.Utils;
 using System.ComponentModel.DataAnnotations;
@@ -11,11 +12,11 @@ namespace OrientoonApi.Models.Request
         [DataType(DataType.Text)]
         [Newtonsoft.Json.JsonProperty("Titulo")]
         // [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public string Titulo { get; set; }
+        public string? Titulo { get; set; }
 
 
         [DataType(DataType.MultilineText, ErrorMessage = "O campo {0} Esta com o formato invalido!")]
-        public string Descricao { get; set; }
+        public string? Descricao { get; set; }
 
 
 
@@ -33,21 +34,16 @@ namespace OrientoonApi.Models.Request
         //
 
         [DataType(DataType.Text, ErrorMessage = "O campo {0} Esta com o formato invalido!")]
-        public string NomeArtista { get; set; }
+        public string? IdArtista { get; set; }
 
         [DataType(DataType.Text, ErrorMessage = "O campo {0} Esta com o formato invalido!")]
-        public string NomeAutor { get; set; }
+        public string? IdAutor { get; set; }
 
 
         // public ICollection<String> TipoOrientoons { get; set; }
         [DataType(DataType.Text, ErrorMessage = "O campo {0} Esta com o formato invalido!")]
-        public string Status { get; set; }
+        public StatusEnum? Status { get; set; }
 
-        public bool AdultContent { get; set; }
-
-        public OrientoonModel Converter()
-        {
-            return new OrientoonModel(Titulo, Descricao, DataLancamento, AdultContent);
-        }
+        public bool? AdultContent { get; set; }
     }
 }

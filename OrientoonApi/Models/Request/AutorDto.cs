@@ -9,12 +9,6 @@ namespace OrientoonApi.Models.Request
 
         public string Nome { get; set; }
 
-        public AutorModel Converter()
-        {
-            return new AutorModel
-            {
-                nome = this.Nome
-            };
-        }
+        
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using OrientoonApi.Models.Request;
 using OrientoonApi.Models.Response;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -15,20 +16,26 @@ namespace OrientoonApi.Models.Entities
         {
         }
 
-        public OrientoonModel(string Titulo, string Descricao, DateTime? DataLancamento, bool AdultContent)
+        public OrientoonModel(OrientoonDto orientoonDto)
         {
            //convert DataLancamento to DateTime
             
-            this.nome = Titulo;
-            this.Descricao = Descricao;
-            this.DataLancamento = DataLancamento;
-            this.AdultContent = AdultContent;
+            this.nome =  orientoonDto.Titulo;
+            this.Descricao = orientoonDto.Descricao;
+            this.DataLancamento = orientoonDto.DataLancamento;
+        }
+
+        public OrientoonModel(OrientoonPutDto orientoonPutDto)
+        {
+            this.nome = orientoonPutDto.Titulo;
+            this.Descricao = orientoonPutDto.Descricao;
+            this.DataLancamento = orientoonPutDto.DataLancamento;
         }
 
 
         [Key]
         [Required]
-        public string Id { get; set; }
+        public string Id { get; set; } = Guid.NewGuid().ToString("N");
 
         [MaxLength(255)]
         [MinLength(1)]
@@ -44,7 +51,7 @@ namespace OrientoonApi.Models.Entities
         [MinLength(1)]
         [DataType(DataType.Text)]
         [StringLength(255)]
-        public string NormalizedTitulo { get; set; }
+        public string NormalizedName { get; set; }
 
         [MaxLength(500)]
         [MinLength(1)]

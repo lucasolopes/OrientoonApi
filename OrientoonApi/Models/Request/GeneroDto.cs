@@ -9,12 +9,6 @@ namespace OrientoonApi.Models.Request
 
         public string Nome { get; set; }
 
-        public GeneroModel Converter()
-        {
-            return new GeneroModel
-            {
-                nome = Nome
-            };
-        }
+        
     }
 }
