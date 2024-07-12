@@ -29,7 +29,7 @@ namespace OrientoonApi.Data.Repositories.Implementations
 
             var host = $"{request.Scheme}://{request.Host}/imagens";
 
-            OrientoonForm orientoon = await _context.Orientoons.Where(x => x.Id == id).Select(o => new OrientoonForm
+            return await _context.Orientoons.Where(x => x.Id == id).Select(o => new OrientoonForm
             {
                 Id = o.Id,
                 Titulo = o.nome,
@@ -53,8 +53,11 @@ namespace OrientoonApi.Data.Repositories.Implementations
                 }
                 ).ToList()
             }).FirstOrDefaultAsync();
+        }
 
-            return orientoon;
+        public async Task<OrientoonModel> GetModelByIdAsync(string id)
+        {
+            return await _context.Orientoons.Where(x => x.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task<string> GetPathBannerById(string id)
@@ -71,7 +74,7 @@ namespace OrientoonApi.Data.Repositories.Implementations
             var query = _context.Orientoons.AsQueryable();
 
             if(!string.IsNullOrEmpty(searchDto.titulo))
-                query = query.Where(x => x.NormalizedTitulo.Contains(searchDto.titulo));
+                query = query.Where(x => x.NormalizedName.Contains(searchDto.titulo));
 
             if (searchDto.genero != null && searchDto.genero.Any())
                 query = query.Where(x => x.GeneroOrientoons.Any(g => searchDto.genero.Contains(g.Genero.nome)));
@@ -79,14 +82,14 @@ namespace OrientoonApi.Data.Repositories.Implementations
             if(!string.IsNullOrEmpty(searchDto.tipo))
                 query = query.Where(x => x.TipoOrientoon.Any(t => t.Tipo.nome == searchDto.tipo));
 
-            if(!string.IsNullOrEmpty(searchDto.status))
+            if(searchDto.status != null )
                 query = query.Where(x => x.Status.nome == searchDto.status);
 
-            if(!string.IsNullOrEmpty(searchDto.autor))
-                query = query.Where(x => x.Autor.nome == searchDto.autor);
+            if(!string.IsNullOrEmpty(searchDto.autorId))
+                query = query.Where(x => x.Autor.Id == searchDto.autorId);
 
-            if(!string.IsNullOrEmpty(searchDto.artista))
-                query = query.Where(x => x.Artista.nome == searchDto.artista);
+            if(!string.IsNullOrEmpty(searchDto.artistaId))
+                query = query.Where(x => x.Artista.Id == searchDto.artistaId);
 
 
             query = searchDto.orderBy switch
