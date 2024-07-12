@@ -83,5 +83,10 @@ namespace OrientoonApi.Services.Implementations
             return await _capituloRepository.GetByIdAsync(id);
         }
 
+        public async Task<List<CapituloInfoForm>> GetCapituloFormsByOrientoonIdAsync(string orientoonId)
+        {
+            List<CapituloModel> capituloModel = await _capituloRepository.GetCapituloByOrientoonIdAsync(orientoonId);
+            return capituloModel.Select(c => c.Converter()).ToList();
+        }
     }
 }

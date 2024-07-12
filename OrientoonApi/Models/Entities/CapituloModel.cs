@@ -43,5 +43,17 @@ namespace OrientoonApi.Models.Entities
             public OrientoonModel Orientoon { get; set; }
 
             public List<ImagemModel> Imagens { get; set; }
+
+            public CapituloInfoForm Converter() 
+            {
+            return new CapituloInfoForm
+            {
+                Id = Id,
+                NumCapitulo = NumCapitulo,
+                DataLancamento = DataLancamento,
+                AvaliacaoCap = AvaliacaoCap,
+                OrientoonId = OrientoonId,
+            };
+            }
         }
 }

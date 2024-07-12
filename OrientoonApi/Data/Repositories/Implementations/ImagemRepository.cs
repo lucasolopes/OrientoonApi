@@ -38,5 +38,10 @@ namespace OrientoonApi.Data.Repositories.Implementations
                 Ordem = i.Ordem,
             }).ToListAsync();
         }
+
+        public async Task<List<ImagemModel>> GetByOrientoonIdAsync(string orientoonId)
+        {
+            return await _context.Imagem.Where(x => x.Capitulo.OrientoonId == orientoonId).ToListAsync();
+        }
     }
 }

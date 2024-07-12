@@ -62,5 +62,11 @@ namespace OrientoonApi.Data.Repositories.Implementations
                 }).ToList()
             }).FirstOrDefaultAsync();
         }
+
+        public Task<List<CapituloModel>> GetCapituloByOrientoonIdAsync(string orientoonId)
+        {
+            return _context.Capitulo.Where(x => x.OrientoonId == orientoonId).ToListAsync();
+        }
+
     }
 }

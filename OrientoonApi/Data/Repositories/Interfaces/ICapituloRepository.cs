@@ -7,6 +7,6 @@ namespace OrientoonApi.Data.Repositories.Interfaces
     {
         Task<CapituloForm> AddAsync(CapituloModel capitulo);
         Task<CapituloForm> GetByIdAsync(string id);
-
+        Task<List<CapituloModel>> GetCapituloByOrientoonIdAsync(string orientoonId);
     }
 }

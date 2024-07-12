@@ -1,4 +1,6 @@
-﻿namespace OrientoonApi.Models.Entities
+﻿using OrientoonApi.Models.Response;
+
+namespace OrientoonApi.Models.Entities
 {
     public class ImagemModel
     {
@@ -8,5 +10,16 @@
         public string CapituloId { get; set; }
         public string Caminho { get; set; }
         public CapituloModel Capitulo { get; set; }
+
+        public ImagemForm Converter()
+        {
+            return new ImagemForm()
+            {
+                Id = Id,
+                Ordem = Ordem,
+                CapituloId = CapituloId,
+                Caminho = Caminho
+            };
+        }
     }
 }

@@ -25,8 +25,9 @@ namespace OrientoonApi.Services.Implementations
         private readonly ITipoOrientoonRepository _tipoOrientoonRepository;
 		private readonly ITipoService _tipoService;
         private readonly IConfiguration _configuration;
+		private readonly ICapituloService _capituloService;
 
-        public OrientoonService(IOrientoonRepository orientoonRepository, IContextRepository contextRepository,IGeneroOrientoonRepository generoOrientoonRepository, ITipoOrientoonRepository tipoOrientoonRepository, IHttpContextAccessor httpContextAccessor, IArtistaService artistaService, IAutorService autorService, IStatusService statusService, IGeneroService generoService, ITipoService tipoService, IConfiguration configuration)
+        public OrientoonService(IOrientoonRepository orientoonRepository, IContextRepository contextRepository,IGeneroOrientoonRepository generoOrientoonRepository, ITipoOrientoonRepository tipoOrientoonRepository, IHttpContextAccessor httpContextAccessor, IArtistaService artistaService, IAutorService autorService, IStatusService statusService, IGeneroService generoService, ITipoService tipoService, IConfiguration configuration, ICapituloService capituloService)
 		{
 			_orientoonRepository = orientoonRepository;
 
@@ -40,6 +41,7 @@ namespace OrientoonApi.Services.Implementations
             _tipoOrientoonRepository = tipoOrientoonRepository;
 			_tipoService = tipoService;
 			_configuration = configuration;
+			_capituloService = capituloService;
         }
 
 		public async Task<OrientoonForm> CreateAsync(OrientoonDto orientoonDto, IFormFile banner)
@@ -240,6 +242,14 @@ namespace OrientoonApi.Services.Implementations
 			TipoModel tipo = await _tipoService.GetByNomeAsync(tipoDto.Nome);
 			await _tipoOrientoonRepository.DeleteAsync(id, tipo.Id);
 			await _contextRepository.SaveChangesAsync();
+        }
+
+        public async Task<OrientoonAggregateForm> GetAggregateAsync(string id)
+        {
+			OrientoonAggregateForm orientoonAggregate = new OrientoonAggregateForm();
+            orientoonAggregate.Orientoon = await GetAsync(id);
+			orientoonAggregate.CapituloList = await _capituloService.GetCapituloFormsByOrientoonIdAsync(id);
+			return orientoonAggregate;
         }
     }
 }

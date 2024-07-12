@@ -8,5 +8,6 @@ namespace OrientoonApi.Services.Interfaces
     {
         Task<CapituloForm> AddCapituloAsync(string mangaId, CapituloDto capituloDto);
         Task<CapituloForm> GetCapituloByIdAsync(string id);
+        Task<List<CapituloInfoForm>> GetCapituloFormsByOrientoonIdAsync(string orientoonId);
     }
 }

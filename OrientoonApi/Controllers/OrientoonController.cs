@@ -233,6 +233,15 @@ namespace OrientoonApi.Controllers
         }
 
 
+        [HttpGet("{id}/aggregate")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<OrientoonAggregateForm>> GetOrientoonAggregate(string id)
+        {
+            OrientoonAggregateForm orientoonAggregate = await _orientoonContext.GetAggregateAsync(id);
+            return Ok(orientoonAggregate);
+        }
+
 
     }
 }
