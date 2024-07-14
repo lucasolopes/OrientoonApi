@@ -251,5 +251,10 @@ namespace OrientoonApi.Services.Implementations
 			orientoonAggregate.CapituloList = await _capituloService.GetCapituloFormsByOrientoonIdAsync(id);
 			return orientoonAggregate;
         }
+
+        public async Task<OrientoonForm> GetRandomAsync()
+        {
+            return (await _orientoonRepository.GetRandomAsync()).Converter();
+        }
     }
 }

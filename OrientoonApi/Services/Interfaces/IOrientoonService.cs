@@ -18,5 +18,6 @@ namespace OrientoonApi.Services.Interfaces
         Task AddTipoAsync(string id, TipoDto tipoDto);
         Task DeleteTipoAsync(string id, TipoDto tipoDto);
         Task<OrientoonAggregateForm> GetAggregateAsync(string id);
+        Task<OrientoonForm> GetRandomAsync();
     }
 }

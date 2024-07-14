@@ -55,6 +55,32 @@ namespace OrientoonApi.Data.Repositories.Implementations
             return await _context.Orientoons.Where(x => x.Id == id).Select(x => x.CBanner).FirstOrDefaultAsync();
         }
 
+        public async Task<OrientoonModel> GetRandomAsync()
+        {
+            var count = await _context.Orientoons.CountAsync();
+            var randomindex =  new Random().Next(count);
+            return await _context.Orientoons.Skip(randomindex).Select(o => new OrientoonModel
+            {
+                Id = o.Id,
+                nome = o.nome,
+                Descricao = o.Descricao,
+                DataLancamento = o.DataLancamento,
+                Artista = o.Artista,
+                Autor = o.Autor,
+                Status = o.Status,
+                Avaliacao = o.Avaliacao,
+                AdultContent = o.AdultContent,
+                GeneroOrientoons = o.GeneroOrientoons,
+                TipoOrientoon = o.TipoOrientoon,
+                CBanner = _urlService.getImagesBaseUrl() + o.CBanner.Replace("\\", "/"),
+                ArtistaId = o.ArtistaId,
+                AutorId = o.AutorId,
+                StatusId = o.StatusId,
+                NormalizedName = o.NormalizedName,
+                Capitulos = o.Capitulos
+            }).FirstOrDefaultAsync();
+        }
+
         public async Task<List<OrientoonModel>> SearchAsync( int batchSize, int pageNumber,SearchDto? searchDto)
         {
 

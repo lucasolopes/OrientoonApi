@@ -10,5 +10,6 @@ namespace OrientoonApi.Data.Repositories.Interfaces
           Task<OrientoonModel> GetByIdAsync(string id);
           Task<List<OrientoonModel>> SearchAsync( int batchSize, int pageNumber,SearchDto? searchDto);
           Task<string> GetPathBannerById(string id);
+        Task<OrientoonModel> GetRandomAsync();
     }
 }

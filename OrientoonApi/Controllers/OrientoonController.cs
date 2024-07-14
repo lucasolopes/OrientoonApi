@@ -242,6 +242,13 @@ namespace OrientoonApi.Controllers
             return Ok(orientoonAggregate);
         }
 
-
+        
+        [HttpGet("random")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<OrientoonForm>> GetRandomOrientoon()
+        {
+            OrientoonForm orientoonForm = await _orientoonContext.GetRandomAsync();
+            return Ok(orientoonForm);
+        }
     }
 }
