@@ -102,7 +102,7 @@ builder.Services.AddScoped<IStatusService, StatusService>();
 builder.Services.AddScoped<IGeneroService, GeneroService>();
 builder.Services.AddScoped<ITipoService, TipoService>();
 builder.Services.AddScoped<ICapituloService, CapituloService>();
-
+builder.Services.AddScoped<IUrlService, UrlService>();
 
 
 
