@@ -27,7 +27,7 @@ namespace OrientoonApi.Models.Entities
         [Column("nome")]
         public string nome { get; set; }
 
-        [JsonIgnore]
+
         public ICollection<OrientoonModel> Orientoons { get; set; }
 
         public ArtistaForm Converter()

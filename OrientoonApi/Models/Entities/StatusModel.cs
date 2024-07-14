@@ -31,7 +31,7 @@ namespace OrientoonApi.Models.Entities
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public StatusEnum nome { get; set; }
 
-        [JsonIgnore]
+
         public ICollection<OrientoonModel> Orientoons { get; set; }
 
         public StatusForm Converter()
