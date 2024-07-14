@@ -7,7 +7,7 @@ namespace OrientoonApi.Data.Repositories.Interfaces
     public interface IImagemRepository
     {
         Task AddAsync(ImagemModel imagem);
-        Task<List<ImagemForm>> GetByCapituloIdAsync(string capituloId);
+        Task<List<ImagemModel>> GetByCapituloIdAsync(string capituloId);
         Task<List<ImagemModel>> GetByOrientoonIdAsync(string orientoonId);
     }
 }

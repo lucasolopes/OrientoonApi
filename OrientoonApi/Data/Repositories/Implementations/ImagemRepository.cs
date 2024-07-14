@@ -3,6 +3,7 @@ using OrientoonApi.Data.Contexts;
 using OrientoonApi.Data.Repositories.Interfaces;
 using OrientoonApi.Models.Entities;
 using OrientoonApi.Models.Response;
+using OrientoonApi.Services.Interfaces;
 
 namespace OrientoonApi.Data.Repositories.Implementations
 {
@@ -10,12 +11,13 @@ namespace OrientoonApi.Data.Repositories.Implementations
     {
 
         private readonly OrientoonContext _context;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ImagemRepository(OrientoonContext context, IHttpContextAccessor httpContextAccessor)
+        private readonly IUrlService _urlService;
+
+        public ImagemRepository(OrientoonContext context,IUrlService urlService )
         {
             _context = context;
-            _httpContextAccessor = httpContextAccessor;
+            _urlService = urlService;
         }
 
         public async Task AddAsync(ImagemModel imagem)
@@ -23,19 +25,16 @@ namespace OrientoonApi.Data.Repositories.Implementations
             await _context.Imagem.AddAsync(imagem);
         }
 
-        public async Task<List<ImagemForm>> GetByCapituloIdAsync(string capituloId)
+        public async Task<List<ImagemModel>> GetByCapituloIdAsync(string capituloId)
         {
-            var request = _httpContextAccessor.HttpContext.Request;
-
-            var host = $"{request.Scheme}://{request.Host}/imagens";
-
-
-            return await _context.Imagem.Where(x => x.CapituloId == capituloId).Select(i => new ImagemForm
+            return await _context.Imagem.Where(x => x.CapituloId == capituloId).Select(i => new ImagemModel
             {
                 Id = i.Id,
-                Caminho =  host + "/" + i.Caminho.Replace("\\", "/"),
+                Caminho =  _urlService.getImagesBaseUrl() + i.Caminho.Replace("\\", "/"),
                 CapituloId = i.CapituloId,
                 Ordem = i.Ordem,
+                Capitulo = i.Capitulo,
+                NomeArquivo = i.NomeArquivo
             }).ToListAsync();
         }
 
