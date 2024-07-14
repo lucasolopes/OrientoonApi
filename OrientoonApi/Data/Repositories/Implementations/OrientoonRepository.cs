@@ -5,6 +5,7 @@ using OrientoonApi.Data.Repositories.Interfaces;
 using OrientoonApi.Models.Entities;
 using OrientoonApi.Models.Request;
 using OrientoonApi.Models.Response;
+using OrientoonApi.Services.Interfaces;
 using System.IO;
 using System.Linq;
 using System.Threading.Channels;
@@ -15,49 +16,38 @@ namespace OrientoonApi.Data.Repositories.Implementations
     public class OrientoonRepository : GenericRepository<OrientoonModel>, IOrientoonRepository 
     {
 
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IUrlService _urlService;
 
-        public OrientoonRepository(OrientoonContext context, IHttpContextAccessor httpContextAccessor) : base(context) {
+        public OrientoonRepository(OrientoonContext context, IUrlService urlService) : base(context) {
 
-            _httpContextAccessor = httpContextAccessor;
+            _urlService = urlService;
+
         }
 
-        public async Task<OrientoonForm> GetByIdAsync(string id)
+        public async Task<OrientoonModel> GetByIdAsync(string id)
         {
 
-            var request = _httpContextAccessor.HttpContext.Request;
-
-            var host = $"{request.Scheme}://{request.Host}/imagens";
-
-            return await _context.Orientoons.Where(x => x.Id == id).Select(o => new OrientoonForm
+            return await _context.Orientoons.Where(x => x.Id == id).Select(o => new OrientoonModel
             {
                 Id = o.Id,
-                Titulo = o.nome,
+                nome = o.nome,
                 Descricao = o.Descricao,
                 DataLancamento = o.DataLancamento,
+                Artista = o.Artista,
+                Autor = o.Autor,
+                Status = o.Status,
                 Avaliacao = o.Avaliacao,
-                NomeArtista = o.Artista.nome,
-                NomeAutor = o.Autor.nome,
-                Status = o.Status.nome,
                 AdultContent = o.AdultContent,
-                Banner = host +"/"+ o.CBanner.Replace("\\", "/"),
-                Generos = o.GeneroOrientoons.Select(g => new GeneroForm
-                {
-                    Id = g.Genero.Id,
-                    Nome = g.Genero.nome
-                }).ToList(),
-                Tipos = o.TipoOrientoon.Select(t => new TipoForm
-                {
-                    Id = t.Tipo.Id,
-                    Nome = t.Tipo.nome
-                }
-                ).ToList()
+               GeneroOrientoons = o.GeneroOrientoons,
+               TipoOrientoon = o.TipoOrientoon,
+               CBanner = _urlService.getImagesBaseUrl() + o.CBanner.Replace("\\", "/"),
+               ArtistaId = o.ArtistaId,
+               AutorId = o.AutorId,
+               StatusId = o.StatusId,
+               NormalizedName = o.NormalizedName,
+               Capitulos = o.Capitulos
             }).FirstOrDefaultAsync();
-        }
-
-        public async Task<OrientoonModel> GetModelByIdAsync(string id)
-        {
-            return await _context.Orientoons.Where(x => x.Id == id).FirstOrDefaultAsync();
+            
         }
 
         public async Task<string> GetPathBannerById(string id)
@@ -65,11 +55,8 @@ namespace OrientoonApi.Data.Repositories.Implementations
             return await _context.Orientoons.Where(x => x.Id == id).Select(x => x.CBanner).FirstOrDefaultAsync();
         }
 
-        public async Task<List<OrientoonForm>> SearchAsync( int batchSize, int pageNumber,SearchDto? searchDto)
+        public async Task<List<OrientoonModel>> SearchAsync( int batchSize, int pageNumber,SearchDto? searchDto)
         {
-            var request = _httpContextAccessor.HttpContext.Request;
-
-            var host = $"{request.Scheme}://{request.Host}/imagens";
 
             var query = _context.Orientoons.AsQueryable();
 
@@ -103,29 +90,25 @@ namespace OrientoonApi.Data.Repositories.Implementations
             };
 
 
-            return await query.Skip((pageNumber - 1) * batchSize).Take(batchSize).Select(o => new OrientoonForm
+            return await query.Skip((pageNumber - 1) * batchSize).Take(batchSize).Select(o => new OrientoonModel
             {
                 Id = o.Id,
-                Titulo = o.nome,
+                nome = o.nome,
                 Descricao = o.Descricao,
                 DataLancamento = o.DataLancamento,
-                NomeArtista = o.Artista.nome,
-                NomeAutor = o.Autor.nome,
-                Status = o.Status.nome,
+                ArtistaId = o.ArtistaId,
+                Artista = o.Artista,
+                AutorId = o.AutorId,
+                Autor = o.Autor,
+                Status = o.Status,
+                StatusId = o.StatusId,
                 AdultContent = o.AdultContent,
-                Banner = host + "/"+ o.CBanner.Replace("\\", "/"),
+                CBanner = _urlService.getImagesBaseUrl() + o.CBanner.Replace("\\", "/"),
                 Avaliacao = o.Avaliacao,
-                Generos = o.GeneroOrientoons.Select(g => new GeneroForm
-                {
-                    Id = g.Genero.Id,
-                    Nome = g.Genero.nome
-                }).ToList(),
-                Tipos = o.TipoOrientoon.Select(t => new TipoForm
-                {
-                    Id = t.Tipo.Id,
-                    Nome = t.Tipo.nome
-                }).ToList()
-
+                GeneroOrientoons = o.GeneroOrientoons,
+                TipoOrientoon = o.TipoOrientoon,
+                Capitulos = o.Capitulos,
+                NormalizedName = o.NormalizedName
             }).ToListAsync();
 
         }

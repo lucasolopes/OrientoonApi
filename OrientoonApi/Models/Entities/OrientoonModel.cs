@@ -82,13 +82,11 @@ namespace OrientoonApi.Models.Entities
 
         public string ArtistaId { get; set; }
 
-        [JsonIgnore]
         public ArtistaModel Artista { get; set; }
 
 
         public string AutorId { get; set; }
 
-        [JsonIgnore]
         public AutorModel Autor { get; set; }
 
         [Newtonsoft.Json.JsonProperty("AdultContent")]
@@ -104,7 +102,6 @@ namespace OrientoonApi.Models.Entities
         //[JsonProperty("Status")]
         public string StatusId { get; set; }
 
-        [JsonIgnore]
         public StatusModel Status { get; set; }
 
         public ICollection<CapituloModel> Capitulos { get; set; }
@@ -115,6 +112,7 @@ namespace OrientoonApi.Models.Entities
             {
                 Id = this.Id,
                 Titulo = this.nome,
+                Banner = this.CBanner,
                 Descricao = this.Descricao,
                 DataLancamento = this.DataLancamento,
                 NomeArtista = this.Artista.nome,

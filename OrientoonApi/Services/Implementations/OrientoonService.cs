@@ -88,10 +88,11 @@ namespace OrientoonApi.Services.Implementations
 				throw new NotFoundException($"Orientoon Id: {id} não encontrado");
 
             var request = _httpContextAccessor.HttpContext.Request;
-            OrientoonForm orientoonForm = await _orientoonRepository.GetByIdAsync(id);
+            OrientoonModel orientoonModel = await _orientoonRepository.GetByIdAsync(id);
+
            // var host = $"{request.Scheme}://{request.Host}/imagens/";
            // orientoonForm.Banner = host + orientoonForm.Banner;
-            return orientoonForm;
+            return orientoonModel.Converter();
         }
 
 		/*public async Task<List<OrientoonForm>> GetListAsync(int batchSize, int pageNumber)
@@ -109,7 +110,7 @@ namespace OrientoonApi.Services.Implementations
 
 		public async Task<OrientoonForm> UpdateAsync(string id, OrientoonPutDto orientoon)
 		{
-			OrientoonModel oldOrientoon = await _orientoonRepository.GetModelByIdAsync(id);
+			OrientoonModel oldOrientoon = await _orientoonRepository.GetByIdAsync(id);
 
 			OrientoonModel newOrientoon = new OrientoonModel(orientoon);
 
@@ -176,9 +177,8 @@ namespace OrientoonApi.Services.Implementations
 
 		public async Task<IEnumerable<OrientoonForm>> SearchAsync( int batchSize, int pageNumber, SearchDto? searchDto)
 		{
-
-
-			return await _orientoonRepository.SearchAsync(batchSize, pageNumber,searchDto);
+            List<OrientoonModel> orientoonModels = await _orientoonRepository.SearchAsync(batchSize, pageNumber,searchDto);
+			return orientoonModels.Select(o => o.Converter()).ToList();
 		}
 
 		public async Task AddGeneroAsync(string id, GeneroDto generoDto)
