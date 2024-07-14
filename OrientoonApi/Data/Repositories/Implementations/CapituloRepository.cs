@@ -3,62 +3,66 @@ using OrientoonApi.Data.Contexts;
 using OrientoonApi.Data.Repositories.Interfaces;
 using OrientoonApi.Models.Entities;
 using OrientoonApi.Models.Response;
+using OrientoonApi.Services.Interfaces;
 
 namespace OrientoonApi.Data.Repositories.Implementations
 {
     public class CapituloRepository : ICapituloRepository
     {
         private readonly OrientoonContext _context;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IUrlService _urlService;
 
-        public CapituloRepository(OrientoonContext context, IHttpContextAccessor httpContextAccessor)
+        public CapituloRepository(OrientoonContext context, IUrlService urlService)
         {
             _context = context;
-            _httpContextAccessor = httpContextAccessor;
+            _urlService = urlService;
         }
 
-        public async Task<CapituloForm> AddAsync(CapituloModel capitulo)
+        public async Task<CapituloModel> AddAsync(CapituloModel capitulo)
         {
             _context.Capitulo.Add(capitulo);
             await _context.SaveChangesAsync();
-            var request = _httpContextAccessor.HttpContext.Request;
 
-            var host = $"{request.Scheme}://{request.Host}/imagens";
 
-            CapituloForm capituloForm = new CapituloForm
+            return new CapituloModel
             {
                 Id = capitulo.Id,
                 NumCapitulo = capitulo.NumCapitulo,
                 OrientoonId = capitulo.OrientoonId,
-                Imagens = capitulo.Imagens.Select(i => new ImagemForm
+                AvaliacaoCap = capitulo.AvaliacaoCap,
+                Caminho = capitulo.Caminho,
+                DataLancamento = capitulo.DataLancamento,
+                Imagens = capitulo.Imagens.Select(i => new ImagemModel
                 {
                     Id = i.Id,
-                    Caminho = host + "/" + i.Caminho.Replace("\\", "/"),
+                    Caminho = _urlService.getImagesBaseUrl() + i.Caminho.Replace("\\", "/"),
                     CapituloId = i.CapituloId,
                     Ordem = i.Ordem,
+                    NomeArquivo = i.NomeArquivo
                 }).ToList()
             };
 
-            return capituloForm;
         }
 
-        public async Task<CapituloForm> GetByIdAsync(string id)
+        public async Task<CapituloModel> GetByIdAsync(string id)
         {
-            var request = _httpContextAccessor.HttpContext.Request;
 
-            var host = $"{request.Scheme}://{request.Host}/imagens";
 
-            return await _context.Capitulo.Where(x => x.Id == id).Select(c => new CapituloForm
+            return await _context.Capitulo.Where(x => x.Id == id).Select(capitulo => new CapituloModel
             {
-                Id = c.Id,
-                NumCapitulo = c.NumCapitulo,
-                OrientoonId = c.OrientoonId,
-                Imagens = c.Imagens.Select(i => new ImagemForm
+                Id = capitulo.Id,
+                NumCapitulo = capitulo.NumCapitulo,
+                OrientoonId = capitulo.OrientoonId,
+                AvaliacaoCap = capitulo.AvaliacaoCap,
+                Caminho = capitulo.Caminho,
+                DataLancamento = capitulo.DataLancamento,
+                Imagens = capitulo.Imagens.Select(i => new ImagemModel
                 {
                     Id = i.Id,
-                    Caminho = host + "/" + i.Caminho.Replace("\\", "/"),
+                    Caminho = _urlService.getImagesBaseUrl() + i.Caminho.Replace("\\", "/"),
                     CapituloId = i.CapituloId,
                     Ordem = i.Ordem,
+                    NomeArquivo = i.NomeArquivo
                 }).ToList()
             }).FirstOrDefaultAsync();
         }

@@ -13,23 +13,23 @@ namespace OrientoonApi.Services.Implementations
         private readonly ICapituloRepository _capituloRepository;
         private readonly IImagemRepository _imagemRepository;
         private readonly IConfiguration _configuration;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+       // private readonly IHttpContextAccessor _httpContextAccessor;
 
 
 
-        public CapituloService(ICapituloRepository capituloRepository, IImagemRepository imagemRepository, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+        public CapituloService(ICapituloRepository capituloRepository, IImagemRepository imagemRepository, IConfiguration configuration /*,IHttpContextAccessor httpContextAccessor*/)
         {
             _capituloRepository = capituloRepository;
             _imagemRepository = imagemRepository;
             _configuration = configuration;
-            _httpContextAccessor = httpContextAccessor;
+          //  _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<CapituloForm> AddCapituloAsync(string orientoonId, CapituloDto capituloDto)
         {
-            var request = _httpContextAccessor.HttpContext.Request;
+            /*var request = _httpContextAccessor.HttpContext.Request;
 
-            var host = $"{request.Scheme}://{request.Host}/imagens";
+            var host = $"{request.Scheme}://{request.Host}/imagens";*/
 
             var uploadPath = _configuration["FileUploadPath"];
             var capitulo = new CapituloModel(capituloDto, orientoonId, Path.Combine(orientoonId, capituloDto.numCap.ToString()));
@@ -57,9 +57,10 @@ namespace OrientoonApi.Services.Implementations
                 }
 
             }
-             
 
-            return await _capituloRepository.AddAsync(capitulo);
+
+            CapituloModel capituloModel = await _capituloRepository.AddAsync(capitulo);
+            return capituloModel.Converter();
         }
 
         private async Task SaveImageCap(IFormFile image,string diretorio)
@@ -80,13 +81,13 @@ namespace OrientoonApi.Services.Implementations
 
         public async Task<CapituloForm> GetCapituloByIdAsync(string id)
         {
-            return await _capituloRepository.GetByIdAsync(id);
+            return (await _capituloRepository.GetByIdAsync(id)).Converter();
         }
 
         public async Task<List<CapituloInfoForm>> GetCapituloFormsByOrientoonIdAsync(string orientoonId)
         {
             List<CapituloModel> capituloModel = await _capituloRepository.GetCapituloByOrientoonIdAsync(orientoonId);
-            return capituloModel.Select(c => c.Converter()).ToList();
+            return capituloModel.Select(c => c.ConverterInfo()).ToList();
         }
     }
 }
