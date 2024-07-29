@@ -51,11 +51,11 @@ namespace OrientoonApi.Controllers
 
         [HttpGet("list")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<List<GeneroForm>>> GetList([FromQuery] int batchSize, [FromQuery] int pageNumber)
+        public async Task<ActionResult<List<GeneroForm>>> GetList([FromQuery] PageableDto pageableDto)
         {
             try
             {
-                List<GeneroForm> generos = await _generoService.GetListAsync(batchSize, pageNumber);
+                List<GeneroForm> generos = await _generoService.GetListAsync(pageableDto.batchSize, pageableDto.pageNumber);
                 return Ok(generos);
             }
             catch (Exception e)

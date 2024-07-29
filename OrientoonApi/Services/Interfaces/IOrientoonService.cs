@@ -8,8 +8,7 @@ namespace OrientoonApi.Services.Interfaces
          Task<OrientoonForm> CreateAsync(OrientoonDto orientoonDto,IFormFile banner);
          
          Task<OrientoonForm> GetAsync(string id);
-        // Task<List<OrientoonForm>> GetListAsync(int batchSize, int pageNumber);
-         Task CreateListAsync(List<OrientoonDto> orientoon);
+
          Task<OrientoonForm> UpdateAsync(string id, OrientoonPutDto orientoon);
         Task DeleteAsync(string id);
         Task<IEnumerable<OrientoonForm>> SearchAsync(int batchSize, int pageNumber, SearchDto? searchDto);

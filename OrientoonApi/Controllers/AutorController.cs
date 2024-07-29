@@ -49,11 +49,11 @@ namespace OrientoonApi.Controllers
 
         [HttpGet("list")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<List<AutorForm>>> GetList([FromQuery] int batchSize, [FromQuery] int pageNumber)
+        public async Task<ActionResult<List<AutorForm>>> GetList([FromQuery] PageableDto pageable)
         {
             try
             {
-                List<AutorForm> autors = await _autorService.GetListAsync(batchSize, pageNumber);
+                List<AutorForm> autors = await _autorService.GetListAsync(pageable.batchSize, pageable.pageNumber);
                 return Ok(autors);
             }
             catch (Exception e)

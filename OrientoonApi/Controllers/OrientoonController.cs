@@ -31,27 +31,6 @@ namespace OrientoonApi.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<OrientoonForm>> PostOrientoon([FromForm] OrientoonDto orientoon,IFormFile banner)
         {
-            /* try
-             {
-                 if (!ModelState.IsValid)
-                 {
-                     var errors = new
-                     {
-                         Message = "Ocorreu um erro de validação",
-                         Errors = ModelState.Values.SelectMany(v => v.Errors)
-                         .Select(e => e.ErrorMessage)
-                     };
-                     // Serializa os erros usando o contratante de camelCase (opcional)
-                     var settings = new JsonSerializerSettings
-                     {
-                         ContractResolver = new CamelCasePropertyNamesContractResolver()
-                     };
-                     var json = JsonConvert.SerializeObject(errors, settings);
-
-                     // Retorna um BadRequest com a mensagem de erro personalizada
-                     return BadRequest(json);
-                 }
-            */
             try {
                 if(banner == null || banner.Length == 0)
                     return BadRequest("Banner não informado.");
@@ -65,24 +44,6 @@ namespace OrientoonApi.Controllers
 
         }
 
-        //post: api/Orientoon/List
-        [HttpPost("List")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> PostListOrientoon(List<OrientoonDto> orientoon)
-        {
-            try
-            {
-                await _orientoonContext.CreateListAsync(orientoon);
-
-                return Ok("Cadastro realizado com sucesso.");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
 
         //get: api/Orientoon/{id}
         [HttpGet("{id}")]
@@ -92,21 +53,10 @@ namespace OrientoonApi.Controllers
         public async Task<ActionResult<OrientoonForm>> GetOrientoon(string id)
         {
             OrientoonForm orientoonForm = await _orientoonContext.GetAsync(id);
-            //return Ok(filePath);
             return Ok(orientoonForm);
 
         }
 
-        //get: api/Orientoon/{batchSize}/{oageNumber}
-       /* [HttpGet("{batchSize}/{pageNumber}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<List<OrientoonForm>>> GetOrientoon(int batchSize, int pageNumber)
-        {
-            List<OrientoonForm> orientoonForm = await _orientoonContext.GetListAsync(batchSize, pageNumber);
-
-            return Ok(orientoonForm);
-        }*/
 
         //put: api/Orientoon/{id}
         [HttpPut("{id}")]
@@ -147,20 +97,11 @@ namespace OrientoonApi.Controllers
         [HttpGet("Search")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<IEnumerable<OrientoonForm>>> SearchOrientoon([FromQuery] int? batchSize, [FromQuery] int? pageNumber,[FromQuery] SearchDto? searchDto)
+        public async Task<ActionResult<IEnumerable<OrientoonForm>>> SearchOrientoon([FromQuery] PageableDto pageable, [FromQuery] SearchDto? searchDto)
         {
-            /*
-                OrderBy Options:
-                "titulo" 
-                "dataLancamento" 
-                "Artista" 
-                "Autor"
-                "status" 
-             */
-            int batchSizeValue = batchSize ?? 10;
-            int pageNumberValue = pageNumber ?? 1;
 
-            IEnumerable<OrientoonForm> orientoonForm = await _orientoonContext.SearchAsync(batchSizeValue, pageNumberValue, searchDto);
+
+            IEnumerable<OrientoonForm> orientoonForm = await _orientoonContext.SearchAsync(pageable.batchSize, pageable.pageNumber, searchDto);
 
             return Ok(orientoonForm);
         }

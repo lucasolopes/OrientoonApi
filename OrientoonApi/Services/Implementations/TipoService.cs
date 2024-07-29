@@ -39,12 +39,17 @@ namespace OrientoonApi.Services.Implementations
 
         public async Task<TipoForm> GetAsync(string id)
         {
-            if (!await _tipoRepository.ExistsByIdAsync(id))
-                throw new NotFoundException($"Tipo com Id: {id} não encontrado.");
+            await ExistTipo(id);
 
             TipoModel tipoModel = await _tipoRepository.GetByIdAsync(id);
 
             return tipoModel.Converter();
+        }
+
+        private async Task ExistTipo(string id)
+        {
+            if (!await _tipoRepository.ExistsByIdAsync(id))
+                throw new NotFoundException($"Tipo com Id: {id} não encontrado.");
         }
 
         public async Task<List<TipoForm>> GetListAsync(int batchSize, int pageNumber)
@@ -61,8 +66,7 @@ namespace OrientoonApi.Services.Implementations
 
         public async Task<TipoForm> UpdateAsync(string id, TipoDto tipoDto)
         {
-            if (!await _tipoRepository.ExistsByIdAsync(id))
-                throw new NotFoundException($"Tipo com Id: {id} não encontrado.");
+            await ExistTipo(id);
 
             TipoModel tipoModel = await _tipoRepository.GetByIdAsync(id);
 
@@ -76,8 +80,7 @@ namespace OrientoonApi.Services.Implementations
 
         public async Task DeleteAsync(string id)
         {
-            if (!await _tipoRepository.ExistsByIdAsync(id))
-                throw new NotFoundException($"Tipo com Id: {id} não encontrado.");
+            await ExistTipo(id);
 
 
             await _tipoRepository.DeleteAsync(id);

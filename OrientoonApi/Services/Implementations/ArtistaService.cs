@@ -36,16 +36,22 @@ namespace OrientoonApi.Services.Implementations
             }
         }
 
+        private async Task ExistArtista(string id)
+        {
+            if (!await _artistaRepository.ExistsByIdAsync(id))
+                throw new NotFoundException($"Artista com Id: {id} não encontrado.");
+        }
 
         public async Task<ArtistaForm> GetAsync(string id)
         {
-            if(!await _artistaRepository.ExistsByIdAsync(id))
-                throw new NotFoundException($"Artista com Id: {id} não encontrado.");
-            
+            await ExistArtista(id);
+
             ArtistaModel artistaModel = await _artistaRepository.GetByIdAsync(id);
 
             return artistaModel.Converter();
         }
+
+      
 
         public async Task<List<ArtistaForm>> GetListAsync(int batchSize, int pageNumber)
         {
@@ -61,10 +67,9 @@ namespace OrientoonApi.Services.Implementations
 
         public async Task<ArtistaForm> UpdateAsync(string id, ArtistaDto artistaDto)
         {
-             if(!await _artistaRepository.ExistsByIdAsync(id))
-                 throw new NotFoundException($"Artista com Id: {id} não encontrado.");
+            await ExistArtista(id);
 
-             ArtistaModel artistaModel = await _artistaRepository.GetByIdAsync(id);
+            ArtistaModel artistaModel = await _artistaRepository.GetByIdAsync(id);
 
              if(artistaDto.Nome != null)
                  artistaModel.nome = artistaDto.Nome;
@@ -76,9 +81,8 @@ namespace OrientoonApi.Services.Implementations
 
         public async Task DeleteAsync(string id)
         {
-            if(!await _artistaRepository.ExistsByIdAsync(id))
-                throw new NotFoundException($"Artista com Id: {id} não encontrado.");
-            
+            await ExistArtista(id);
+
 
             await _artistaRepository.DeleteAsync(id);
             await _contextRepository.SaveChangesAsync();
@@ -97,8 +101,7 @@ namespace OrientoonApi.Services.Implementations
 
         public async Task<ArtistaModel> GetByIdAsync(string artistaId)
         {
-            if (!await _artistaRepository.ExistsByIdAsync(artistaId))
-                throw new NotFoundException($"Artista com Id: {artistaId} não encontrado.");
+            await ExistArtista(artistaId);
 
             return await _artistaRepository.GetByIdAsync(artistaId);
         }

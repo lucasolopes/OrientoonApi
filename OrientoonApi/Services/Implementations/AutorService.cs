@@ -38,12 +38,17 @@ namespace OrientoonApi.Services.Implementations
         //remover dps
         public async Task<AutorForm> GetAsync(string id)
         {
-            if (!await _autorRepository.ExistsByIdAsync(id))
-                throw new NotFoundException($"Autor com Id: {id} não encontrado.");
+            await ExistAutor(id);
 
             AutorModel AutorModel = await _autorRepository.GetByIdAsync(id);
 
             return AutorModel.Converter();
+        }
+
+        private async Task ExistAutor(string id)
+        {
+            if (!await _autorRepository.ExistsByIdAsync(id))
+                throw new NotFoundException($"Autor com Id: {id} não encontrado.");
         }
 
         public async Task<List<AutorForm>> GetListAsync(int batchSize, int pageNumber)
@@ -59,8 +64,7 @@ namespace OrientoonApi.Services.Implementations
 
         public async Task<AutorForm> UpdateAsync(string id, AutorDto AutorDto)
         {
-            if (!await _autorRepository.ExistsByIdAsync(id))
-                throw new NotFoundException($"Autor com Id: {id} não encontrado.");
+            await ExistAutor(id);
 
             AutorModel AutorModel = await _autorRepository.GetByIdAsync(id);
 
@@ -74,8 +78,7 @@ namespace OrientoonApi.Services.Implementations
 
         public async Task DeleteAsync(string id)
         {
-            if (!await _autorRepository.ExistsByIdAsync(id))
-                throw new NotFoundException($"Autor com Id: {id} não encontrado.");
+            await ExistAutor(id);
 
 
             await _autorRepository.DeleteAsync(id);
@@ -93,10 +96,9 @@ namespace OrientoonApi.Services.Implementations
 
         public async Task<AutorModel> GetByIdAsync(string autorId)
         {
-            if (!await _autorRepository.ExistsByIdAsync(autorId))
-                throw new NotFoundException($"Autor com Id: {autorId} não encontrado.");
+            await ExistAutor(autorId);
 
-           return await _autorRepository.GetByIdAsync(autorId);
+            return await _autorRepository.GetByIdAsync(autorId);
         }
     }
 }

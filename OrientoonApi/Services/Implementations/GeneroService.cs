@@ -35,16 +35,23 @@ namespace OrientoonApi.Services.Implementations
             }
         }
 
-
-        public async Task<GeneroForm> GetAsync(string id)
+        private async Task ExisteGenero(string id)
         {
             if (!await _generoRepository.ExistsByIdAsync(id))
                 throw new NotFoundException($"Genero com Id: {id} não encontrado.");
+        }
+
+
+        public async Task<GeneroForm> GetAsync(string id)
+        {
+            await ExisteGenero(id);
 
             GeneroModel generoModel = await _generoRepository.GetByIdAsync(id);
 
             return generoModel.Converter();
         }
+
+       
 
         public async Task<List<GeneroForm>> GetListAsync(int batchSize, int pageNumber)
         {
@@ -59,8 +66,7 @@ namespace OrientoonApi.Services.Implementations
 
         public async Task<GeneroForm> UpdateAsync(string id, GeneroDto generoDto)
         {
-            if (!await _generoRepository.ExistsByIdAsync(id))
-                throw new NotFoundException($"Genero com Id: {id} não encontrado.");
+            await ExisteGenero(id);
 
             GeneroModel generoModel = await _generoRepository.GetByIdAsync(id);
 
@@ -74,9 +80,7 @@ namespace OrientoonApi.Services.Implementations
 
         public async Task DeleteAsync(string id)
         {
-            if (!await _generoRepository.ExistsByIdAsync(id))
-                throw new NotFoundException($"Genero com Id: {id} não encontrado.");
-
+            await ExisteGenero(id);
 
             await _generoRepository.DeleteAsync(id);
             await _contextRepository.SaveChangesAsync();
