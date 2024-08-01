@@ -4,6 +4,7 @@ using System.Reflection;
 
 namespace OrientoonApi.Data.Contexts
 {
+    #pragma warning disable CS1591
     public class OrientoonContext : DbContext
     {
         public OrientoonContext(DbContextOptions<OrientoonContext> options) : base(options)
@@ -66,4 +67,5 @@ namespace OrientoonApi.Data.Contexts
 
         }
     }
+    #pragma warning restore CS1591
 }

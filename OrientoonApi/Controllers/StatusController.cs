@@ -15,7 +15,9 @@ namespace OrientoonApi.Controllers
             _statusService = statusService;
         }
 
-
+        /// <summary>
+        /// Pega o Status.
+        /// </summary>
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -32,7 +34,9 @@ namespace OrientoonApi.Controllers
             }
         }
 
-        //get all status
+        /// <summary>
+        /// Pega todos Status.
+        /// </summary>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

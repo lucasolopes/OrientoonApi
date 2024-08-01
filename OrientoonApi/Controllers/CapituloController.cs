@@ -14,6 +14,9 @@ namespace OrientoonApi.Controllers
             _capituloService = capituloService;
         }
 
+        /// <summary>
+        /// Cria o Capitulo.
+        /// </summary>
         [HttpPost("{orientoonId}")]
         public async Task<IActionResult> UploadCapitulo(string orientoonId,[FromForm] CapituloDto capituloDto)
         {
@@ -26,7 +29,9 @@ namespace OrientoonApi.Controllers
             return Ok(capitulo);
         }
 
-
+        /// <summary>
+        /// Pega o Capitulo.
+        /// </summary>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCapitulo(string id)
         {

@@ -16,6 +16,9 @@ namespace OrientoonApi.Controllers
             _tipoService = tipoService;
         }
 
+        /// <summary>
+        /// Cria um Tipo.
+        /// </summary>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -32,6 +35,9 @@ namespace OrientoonApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Pega um Tipo.
+        /// </summary>
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -48,7 +54,10 @@ namespace OrientoonApi.Controllers
             }
         }
 
-        [HttpGet("list")]
+        /// <summary>
+        /// Pega uma lista de Tipos.
+        /// </summary>
+        [HttpGet()]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<List<TipoForm>>> GetList([FromQuery] PageableDto pageable)
         {
@@ -63,6 +72,9 @@ namespace OrientoonApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Altera o Tipo.
+        /// </summary>
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -79,6 +91,9 @@ namespace OrientoonApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Deleta um Tipo.
+        /// </summary>
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

@@ -25,6 +25,9 @@ namespace OrientoonApi.Controllers
 
         }
 
+        /// <summary>
+        /// Cria um novo Orientoon.
+        /// </summary>
         [HttpPost]
         [Consumes("multipart/form-data")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -45,7 +48,9 @@ namespace OrientoonApi.Controllers
         }
 
 
-        //get: api/Orientoon/{id}
+        /// <summary>
+        /// Pega o Orientoon.
+        /// </summary>
         [HttpGet("{id}")]
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -58,7 +63,9 @@ namespace OrientoonApi.Controllers
         }
 
 
-        //put: api/Orientoon/{id}
+        /// <summary>
+        /// Atualiza o Orientoon.
+        /// </summary>
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -75,7 +82,9 @@ namespace OrientoonApi.Controllers
             }
         }
 
-        //delete: api/Orientoon/{id}
+        /// <summary>
+        /// Deleta o Orientoon.
+        /// </summary>
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -93,7 +102,9 @@ namespace OrientoonApi.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Busca a lista de Orientoons.
+        /// </summary>
         [HttpGet("Search")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -106,7 +117,9 @@ namespace OrientoonApi.Controllers
             return Ok(orientoonForm);
         }
 
-
+        /// <summary>
+        /// Adiciona um Genero ao Orientoon.
+        /// </summary>
         [HttpPost("genero")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -124,6 +137,9 @@ namespace OrientoonApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Deleta um Genero ao Orientoon.
+        /// </summary>
         [HttpDelete("genero")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -140,6 +156,9 @@ namespace OrientoonApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Adiciona um Tipo ao Orientoon.
+        /// </summary>
         [HttpPost("tipo")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -157,6 +176,9 @@ namespace OrientoonApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Deleta um Tipo ao Orientoon.
+        /// </summary>
         [HttpDelete("tipo")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -173,7 +195,9 @@ namespace OrientoonApi.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Pega o Orientoon com os capitulos.
+        /// </summary>
         [HttpGet("{id}/aggregate")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -183,7 +207,9 @@ namespace OrientoonApi.Controllers
             return Ok(orientoonAggregate);
         }
 
-        
+        /// <summary>
+        /// Pega um Orientoon aleatório.
+        /// </summary>
         [HttpGet("random")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<OrientoonForm>> GetRandomOrientoon()

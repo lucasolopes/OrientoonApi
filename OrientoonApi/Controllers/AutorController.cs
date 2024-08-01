@@ -15,6 +15,9 @@ namespace OrientoonApi.Controllers
             _autorService = autorService;
         }
 
+        /// <summary>
+        /// Cria o Autor.
+        /// </summary>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -31,6 +34,9 @@ namespace OrientoonApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Pega o Autor.
+        /// </summary>
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -47,7 +53,10 @@ namespace OrientoonApi.Controllers
             }
         }
 
-        [HttpGet("list")]
+        /// <summary>
+        /// Pega a lista de Autores.
+        /// </summary>
+        [HttpGet()]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<List<AutorForm>>> GetList([FromQuery] PageableDto pageable)
         {
@@ -62,6 +71,9 @@ namespace OrientoonApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Atualiza o Autor.
+        /// </summary>
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -78,6 +90,9 @@ namespace OrientoonApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Deleta o Autor.
+        /// </summary>
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
