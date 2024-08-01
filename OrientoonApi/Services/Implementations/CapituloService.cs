@@ -89,5 +89,10 @@ namespace OrientoonApi.Services.Implementations
             List<CapituloModel> capituloModel = await _capituloRepository.GetCapituloByOrientoonIdAsync(orientoonId);
             return capituloModel.Select(c => c.ConverterInfo()).ToList();
         }
+
+        public async Task DeleteAsync(string id)
+        {
+            await _capituloRepository.DeleteAsync(id);
+        }
     }
 }

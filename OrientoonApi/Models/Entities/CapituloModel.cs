@@ -52,7 +52,6 @@ namespace OrientoonApi.Models.Entities
                     NumCapitulo = NumCapitulo,
                     DataLancamento = DataLancamento,
                     AvaliacaoCap = AvaliacaoCap,
-                    OrientoonId = OrientoonId,
                 };
             }
 
@@ -64,7 +63,6 @@ namespace OrientoonApi.Models.Entities
                     NumCapitulo = NumCapitulo,
                     DataLancamento = DataLancamento,
                     AvaliacaoCap = AvaliacaoCap,
-                    OrientoonId = OrientoonId,
                     Imagens = Imagens.Select(i => i.Converter()).ToList(),
                 };
                 

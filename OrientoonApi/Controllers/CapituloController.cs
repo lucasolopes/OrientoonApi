@@ -43,5 +43,37 @@ namespace OrientoonApi.Controllers
 
             return Ok(capitulo);
         }
+
+
+        /// <summary>
+        /// Atualiza o Capitulo.
+        /// </summary>
+        [HttpPut("{id}")]
+        [ApiExplorerSettings(IgnoreApi = true)]
+        //implementar depois
+        public async Task<IActionResult> UpdateCapitulo(string id, [FromBody] CapituloDto capituloDto)
+        {
+            throw new NotImplementedException();
+        }
+
+
+
+        /// <summary>
+        /// Deleta o Capitulo.
+        /// </summary>
+        
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCapitulo(string id)
+        {
+            try
+            {
+                await _capituloService.DeleteAsync(id);
+                return Ok();
+            }catch(Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+        
     }
 }

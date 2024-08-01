@@ -9,7 +9,5 @@
         public DateTime? DataLancamento;
 
         public Double AvaliacaoCap;
-
-        public string OrientoonId;
     }
 }

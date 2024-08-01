@@ -44,6 +44,12 @@ namespace OrientoonApi.Data.Repositories.Implementations
 
         }
 
+        public async Task DeleteAsync(string id)
+        {
+            await _context.Capitulo.Where(x => x.Id == id).ForEachAsync(x => _context.Capitulo.Remove(x));
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<CapituloModel> GetByIdAsync(string id)
         {
 
