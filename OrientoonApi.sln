@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrientoonApi", "OrientoonApi\OrientoonApi.csproj", "{DBE4A45D-E82A-47E5-9BBF-DD2F64DC9E9B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrientoonApi", "OrientoonApi\OrientoonApi.csproj", "{DBE4A45D-E82A-47E5-9BBF-DD2F64DC9E9B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestOrientoon", "TestOrientoon\TestOrientoon.csproj", "{95FD66C7-4BAD-4BDE-89A3-536CD495C84B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{DBE4A45D-E82A-47E5-9BBF-DD2F64DC9E9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DBE4A45D-E82A-47E5-9BBF-DD2F64DC9E9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DBE4A45D-E82A-47E5-9BBF-DD2F64DC9E9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95FD66C7-4BAD-4BDE-89A3-536CD495C84B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95FD66C7-4BAD-4BDE-89A3-536CD495C84B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95FD66C7-4BAD-4BDE-89A3-536CD495C84B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95FD66C7-4BAD-4BDE-89A3-536CD495C84B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

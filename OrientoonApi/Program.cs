@@ -15,6 +15,7 @@ using OrientoonApi.Services.Implementations;
 using OrientoonApi.Services.Interfaces;
 using OrientoonApi.Status.Implementations;
 using OrientoonApi.Utils;
+using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Reflection;
@@ -73,6 +74,7 @@ var connectionString = builder.Configuration.GetConnectionString("DatabaseLocal"
 builder.Services.AddDbContext<OrientoonContext>(options =>
 {
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+    options.UseInMemoryDatabase("InMemoryDb");
 });
 
 builder.Services.AddHttpContextAccessor();
