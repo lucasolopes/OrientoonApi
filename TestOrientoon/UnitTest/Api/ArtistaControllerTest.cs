@@ -20,35 +20,27 @@ namespace TestOrientoon.UnitTest.Api
     public class ArtistaControllerTest : IClassFixture<DataBaseFixture>
     {
         private readonly DataBaseFixture _fixture;
-
-        private readonly Mock<IArtistaService> _artistaServiceMock;
         private readonly ArtistaController _controller;
-
+        
         public ArtistaControllerTest(DataBaseFixture fixture)
         {
             _fixture = fixture;
-            _artistaServiceMock = new Mock<IArtistaService>();
-            _artistaServiceMock.Setup(service => service.GetAsync(It.IsAny<string>())).ReturnsAsync((string id) =>
-            {
-                var artista = _fixture.Context.Artista.FirstOrDefault(a => a.Id == id);
-                return  new ArtistaForm { Id = artista.Id, Nome = artista.nome };
-            });
-            _controller = new ArtistaController(_artistaServiceMock.Object);
+            _controller = new ArtistaController(_fixture.ArtistaService);
         }
 
         [Fact]
         public async void GetArtista()
         {
             var artistaId = "1";
-            var expectedArtista = new ArtistaModel { Id =  artistaId, nome = "Oda" };
+            var expectedArtista = new ArtistaForm { Id = artistaId, Nome = "Oda" };
 
-           var result = await _controller.Get(artistaId);
+            var result = await _controller.Get(artistaId);
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var returnValue = Assert.IsType<ArtistaForm>(okResult.Value);
             Assert.Equal(expectedArtista.Id, returnValue.Id);
-            Assert.Equal(expectedArtista.nome, returnValue.Nome);
+            Assert.Equal(expectedArtista.Nome, returnValue.Nome);
 
         }
     }

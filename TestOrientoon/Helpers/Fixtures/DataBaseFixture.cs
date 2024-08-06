@@ -6,11 +6,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OrientoonApi.Models.Entities;
+using OrientoonApi.Data.Repositories.Interfaces;
+using OrientoonApi.Services.Interfaces;
+using OrientoonApi.Data.Repositories.Implementations;
+using OrientoonApi.Services.Implementations;
 namespace TestOrientoon.Helpers.Fixtures
 {
     public class DataBaseFixture : IDisposable
     {
         public OrientoonContext Context { get; private set; }
+        public IArtistaRepository ArtistaRepository { get; private set; }
+        public IArtistaService ArtistaService { get; private set; }
+        public IContextRepository ContextRepository { get; private set; }
 
         public DataBaseFixture()
         {
@@ -19,6 +26,9 @@ namespace TestOrientoon.Helpers.Fixtures
                 .Options;
             
             Context  = new OrientoonContext(options);
+            ArtistaRepository = new ArtistaRepository(Context);
+            ContextRepository =new ContextRepository(Context);
+            ArtistaService = new ArtistaService(ArtistaRepository, ContextRepository);
 
             SeedDatabase();
 
