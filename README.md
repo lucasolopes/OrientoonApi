@@ -6,7 +6,7 @@ OrientoonApi é um projeto que visa em ser um sistema de gerenciamento para Mang
 ## Desafios Propostos para este projeto:
 * Ferramenta de pesquisa :white_check_mark:
 * Documentação Swagger :white_check_mark:
-* TDD 
+* TDD :hammer:
 * Arquitetura Onion
 * Fluent Validation
 * Compressao De imagens
