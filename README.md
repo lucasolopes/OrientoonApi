@@ -3,6 +3,23 @@
 
 OrientoonApi é um sistema avançado de gerenciamento para Mangás, incluindo Webtoons e Novels. O nome combina "Orient" (cultura oriental) e "toon" (desenhos animados). É projetado para ser intuitivo e fácil de usar, permitindo acesso eficiente às obras favoritas. Além disso, o OrientoonApi oferece ferramentas para criadores e administradores de conteúdo, facilitando a gestão de publicações e a interação com a comunidade de leitores. Com uma interface amigável e recursos robustos, é a solução ideal para entusiastas de Mangás e conteúdos orientais.
 
+## Desafios Propostos para este projeto:
+* Ferramenta de pesquisa :white_check_mark:
+* Documentação Swagger :white_check_mark:
+* TDD 
+* Arquitetura Onion
+* Fluent Validation
+* Compressao De imagens
+* Caching
+* Autenticação e Autorização
+* Pre-Carregamento de capitulos
+* Pub/Sub(notificação)
+* Monitoramento e Logging
+* Testes de Carga/Segurança
+* Sistema de Backup
+* Serviços de Pagamento
+* Recomendação Por IA
+
 ## Pré-requisitos
 
 Para iniciar o desenvolvimento do seu projeto utilizando ASP.NET Core 6 com MariaDB 11.4, certifique-se de ter os seguintes requisitos instalados e configurados:
